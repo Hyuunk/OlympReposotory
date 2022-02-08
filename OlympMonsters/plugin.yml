@@ -1,0 +1,7 @@
+name: OlympMonsters
+version: 1
+author: Hyu
+main: fr.hyu.olympmonsters.Main
+commands:
+  monster:
+    description: Permet d'avoir accès aux commandes monsters.

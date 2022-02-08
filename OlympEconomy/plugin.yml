@@ -1,0 +1,7 @@
+name: OlympEconomy
+version: 1
+author: Hyu
+main: fr.hyu.olympeconomy.Main
+commands:
+  economy:
+    description: Permet d'acceder à toutes les commandes du plugin Olymp.

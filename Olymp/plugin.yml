@@ -1,0 +1,9 @@
+name: Olymp
+version: 1
+author: Hyu
+main: fr.hyu.olymp.Main
+commands:
+  olymp:
+    description: Permet d'acceder à toutes les commandes du plugin Olymp.
+  party:
+    description: Permet de créer une partie avec ses ami(e)s.

@@ -1,0 +1,7 @@
+name: OlympPerms
+version: 1
+author: Hyu
+main: fr.hyu.olympperms.Main
+commands:
+  perms:
+    description: Permet d'actualiser les permissions
