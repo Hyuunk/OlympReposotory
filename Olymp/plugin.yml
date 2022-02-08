@@ -7,3 +7,5 @@ commands:
     description: Permet d'acceder à toutes les commandes du plugin Olymp.
   party:
     description: Permet de créer une partie avec ses ami(e)s.
+  chatcolor:
+    description: Affiche la liste des couleurs.

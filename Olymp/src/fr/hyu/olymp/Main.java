@@ -2,6 +2,7 @@ package fr.hyu.olymp;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.hyu.olymp.chat.ChatColorCommand;
 import fr.hyu.olymp.chat.ChatManager;
 import fr.hyu.olymp.party.PartyCommands;
 import fr.hyu.olympperms.players.PlayerRankProfile;
@@ -19,7 +20,8 @@ public class Main extends JavaPlugin {
 		
 		//Commandes
 		getCommand("olymp").setExecutor(new OlympCommands());
-		getCommand("party").setExecutor(new PartyCommands());			
+		getCommand("party").setExecutor(new PartyCommands());	
+		getCommand("chatcolor").setExecutor(new ChatColorCommand());
 		
 		//TabCompleters
 		getCommand("olymp").setTabCompleter(new OlympCommands());

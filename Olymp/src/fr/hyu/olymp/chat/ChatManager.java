@@ -16,7 +16,7 @@ public class ChatManager implements Listener{
 		String rankPlayer = PlayerProfileManager.profiles.get(event.getPlayer()).getRank().toString().toLowerCase();
 		
 		if (rankPlayer.equals("gerant")) {			
-			toFormat(ChatColor.GOLD + "GérantBG", event.getPlayer().getName(), event.getMessage(), event);
+			toFormat(ChatColor.GOLD + "Gérant", event.getPlayer().getName(), event.getMessage(), event);
 		} else if (rankPlayer.equals("responsable")) {
 			toFormat(ChatColor.RED + "Responsable", event.getPlayer().getName(), event.getMessage(), event);
 		} else if (rankPlayer.equals("developpeur")) {
@@ -30,14 +30,14 @@ public class ChatManager implements Listener{
 		} else {
 			toFormat(ChatColor.GRAY.toString() + "wip", event.getPlayer().getName(), event.getMessage(), event);
 			
-			event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+			
 				
 		}
 		
 	}
 	
 public void toFormat(String type, String name, String message, AsyncPlayerChatEvent event) {	
-	event.setFormat(ChatColor.GRAY + "[" + PlayerProfileManager.profiles.get(event.getPlayer()).getLevel() + "/" + type + ChatColor.GRAY + "] " + name + " : " + buildText(message));
+	event.setFormat(ChatColor.GRAY + "[" + PlayerProfileManager.profiles.get(event.getPlayer()).getLevel() + "/" + type + ChatColor.GRAY + "] " + name + ": " + colourise(message));
 		
 }
 
@@ -45,6 +45,7 @@ public enum MessageType {
 		
 	//OLYMPTYPE
 	OLYMPCLASSIC(ChatColor.GRAY + "[" + ChatColor.GOLD + "Olymp" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
+	
 	OLYMPRIGHT(ChatColor.GRAY + "[" + ChatColor.GREEN + "Olymp" + ChatColor.GRAY + "]"	+ ChatColor.WHITE + " > " + ChatColor.GRAY),
 	OLYMPERROR(ChatColor.GRAY + "[" + ChatColor.RED + "OlympError" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
 
@@ -66,25 +67,8 @@ public enum MessageType {
 	}	
  }
 	
-	
-private String buildText(String text) {
-    StringBuilder sb = new StringBuilder();
-    String[] textArray = text.split(" ");
-    for (String chunk : textArray) {
-        if (chunk.contains("&")) {
-            if (chunk.equalsIgnoreCase("&black"))
-                sb.append(ChatColor.BLACK);
-            else if (chunk.equalsIgnoreCase("&blue"))
-                sb.append(ChatColor.DARK_BLUE);
-            else if (chunk.equalsIgnoreCase("&green"))
-                sb.append(ChatColor.DARK_GREEN);
-            else if (chunk.equalsIgnoreCase("&white"))
-                sb.append(ChatColor.WHITE);
-            
-            return sb.toString();
-            }
-        }
-	return null;
-     	
-}
+	private static String colourise(String message) {
+		return ChatColor.translateAlternateColorCodes('&', message);
+	}
+
 }

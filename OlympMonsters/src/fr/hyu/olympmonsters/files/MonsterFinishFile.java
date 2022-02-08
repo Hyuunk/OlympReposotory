@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import fr.hyu.olympperms.Main;
+import fr.hyu.olymp.Main;
 import fr.hyu.olympperms.players.PlayerProfile.Stat;
 
 public class MonsterFinishFile{
