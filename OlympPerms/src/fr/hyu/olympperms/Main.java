@@ -6,9 +6,9 @@ import fr.hyu.olympperms.players.PlayerProfileManager;
 
 public class Main extends JavaPlugin {
 
-	
 	@Override
 	public void onEnable() {
+		
 		
 		System.out.println("OlympPerms est activé");
 		
