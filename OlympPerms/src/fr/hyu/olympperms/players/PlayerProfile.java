@@ -35,7 +35,7 @@ public class PlayerProfile {
 
 		this.uuid = player.getUniqueId();
 		init();
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		this.rank = Rank.valueOf(config.getString("rank").toUpperCase());
 		this.level = config.getInt("level.level");
@@ -53,7 +53,7 @@ public class PlayerProfile {
 
 	private void init() {
 
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		if (!file.exists()) {
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			config.set("rank", "default");
@@ -100,7 +100,7 @@ public class PlayerProfile {
 
 	public void setRank(Rank rank) {
 		this.rank = rank;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("rank", rank);
 		try {
@@ -116,7 +116,7 @@ public class PlayerProfile {
 
 	public void setLevel(int level) {
 		this.level = level;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("level.level", level);
 		try {
@@ -132,7 +132,7 @@ public class PlayerProfile {
 
 	public void setExperiencesPoints(int experiencesPoints) {
 		this.experiencesPoints = experiencesPoints;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("level.experiencesPoints", experiencesPoints);
 		try {
@@ -148,7 +148,7 @@ public class PlayerProfile {
 
 	public void setGold(int gold) {
 		this.gold = gold;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("gold", gold);
 		try {
@@ -164,7 +164,7 @@ public class PlayerProfile {
 
 	public void setKarma(int karma) {
 		this.karma = karma;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.karmaPoint", karma);
 		try {
@@ -186,7 +186,7 @@ public class PlayerProfile {
 
 	public void setVitalityNative(int vitalityNative) {
 		this.vitalityNative = vitalityNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.vitalityNative", vitalityNative);
 		try {
@@ -203,7 +203,7 @@ public class PlayerProfile {
 
 	public void setDefenceNative(int defenceNative) {
 		this.defenceNative = defenceNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.defenceNative", defenceNative);
 		try {
@@ -219,7 +219,7 @@ public class PlayerProfile {
 
 	public void setStrengthNative(int strengthNative) {
 		this.strengthNative = strengthNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.strengthNative", strengthNative);
 		try {
@@ -235,7 +235,7 @@ public class PlayerProfile {
 
 	public void setEnduranceNative(int enduranceNative) {
 		this.enduranceNative = enduranceNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.enduranceNative", enduranceNative);
 		try {
@@ -251,7 +251,7 @@ public class PlayerProfile {
 
 	public void setIntelligenceNative(int intelligenceNative) {
 		this.intelligenceNative = intelligenceNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.intelligenceNative", intelligenceNative);
 		try {
@@ -267,7 +267,7 @@ public class PlayerProfile {
 
 	public void setManaCapacityNative(int manaCapacityNative) {
 		this.manaCapacityNative = manaCapacityNative;
-		File file = new File(Main.INSTANCE.getDataFolder(), "players/" + uuid + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.manaCapacityNative", manaCapacityNative);
 		try {

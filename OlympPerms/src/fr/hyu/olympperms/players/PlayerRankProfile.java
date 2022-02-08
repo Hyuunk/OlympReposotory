@@ -17,7 +17,7 @@ public class PlayerRankProfile {
 
 	public static void initRank() {
 
-		File filePermissions = new File(Main.INSTANCE.getDataFolder(), "permissions/permissions.yml");
+		File filePermissions = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/permissions/permissions.yml");
 		FileConfiguration configPermissions = YamlConfiguration.loadConfiguration(filePermissions);
 
 		if (!filePermissions.exists()) {
