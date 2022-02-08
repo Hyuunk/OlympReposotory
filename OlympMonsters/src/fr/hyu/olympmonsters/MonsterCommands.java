@@ -62,7 +62,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 							
 							if (isEntity(entityType)) {
 
-								File file = new File(Main.INSTANCE.getDataFolder(), "monstersWIP/" + newMonster + ".yml");
+								File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + newMonster + ".yml");
 								if (!file.exists()) {
 							init(newMonster, entityType);
 							player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage() + "Monster " + ChatColor.BLUE
@@ -95,7 +95,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 						
 						String monster = args[1];
 						
-						File file = new File(Main.INSTANCE.getDataFolder(), "monstersWIP/" + monster + ".yml");
+						File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + monster + ".yml");
 						if (file.exists()) {
 							
 							if (MonsterFinishFile.monsterFinish(file, monster)) {
@@ -123,15 +123,16 @@ public class MonsterCommands implements CommandExecutor, Listener {
 					
 					if (args.length == 2) {
 						String nameMonster = args[1];
-						File file = new File(Main.INSTANCE.getDataFolder(), "monstersWIP/" + nameMonster + ".yml");
+						File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + nameMonster + ".yml");
 						
 						if (file.exists()) { 
 														
-							TextComponent text = new TextComponent(ChatColor.RED + ChatColor.BOLD.toString() + "Click to confirm." );
+							TextComponent text = new TextComponent(ChatColor.RED.toString() + "Click to delete" );
 							text.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/monster forcedelete " + args[1])) ;
 							ComponentBuilder textBuilder = new ComponentBuilder("");
 							textBuilder.append(ChatManager.MessageType.OLYMPCLASSIC.getMessage());
-							textBuilder.append(text);						
+							textBuilder.append(text);
+							textBuilder.append(ChatColor.GRAY + " file of monster " + ChatColor.RED + nameMonster + ChatColor.GRAY + ".");
 							player.spigot().sendMessage(textBuilder.create());
 							
 							break;
@@ -151,7 +152,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 					
 					if (args.length == 2) {
 						String nameMonster = args[1];
-						File file = new File(Main.INSTANCE.getDataFolder(), "monstersWIP/" + nameMonster + ".yml");
+						File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + nameMonster + ".yml");
 						
 						if (file.exists()) { 
 
@@ -179,7 +180,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 	
 				
 			} else {
-				player.sendMessage("Unknown command. Type \"/help\" for help.");
+				player.sendMessage(ChatManager.MessageType.UNKNOWCOMMAND.getMessage());
 				return false;
 			}
 		
@@ -191,7 +192,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 	private void init(String newMonster, String entityType) {
 		
 
-		File file = new File(Main.INSTANCE.getDataFolder(), "monstersWIP/" + newMonster + ".yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + newMonster + ".yml");
 		if (!file.exists()) {
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			

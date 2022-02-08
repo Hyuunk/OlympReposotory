@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import fr.hyu.olympperms.players.PlayerProfileManager;
+import fr.hyu.olympperms.players.PlayerRankProfile;
 
 
 public class ChatManager implements Listener{
@@ -36,23 +37,28 @@ public class ChatManager implements Listener{
 		
 	}
 	
-public void toFormat(String type, String name, String message, AsyncPlayerChatEvent event) {	
+public void toFormat(String type, String name, String message, AsyncPlayerChatEvent event) {
+	if (PlayerRankProfile.hasPermission(event.getPlayer(), "chatcolor.use")) {
 	event.setFormat(ChatColor.GRAY + "[" + PlayerProfileManager.profiles.get(event.getPlayer()).getLevel() + "/" + type + ChatColor.GRAY + "] " + name + ": " + colourise(message));
-		
+	} else {
+		event.setFormat(ChatColor.GRAY + "[" + PlayerProfileManager.profiles.get(event.getPlayer()).getLevel() + "/" + type + ChatColor.GRAY + "] " + name + ": " + message);
+	}
 }
 
 public enum MessageType {
 		
 	//OLYMPTYPE
-	OLYMPCLASSIC(ChatColor.GRAY + "[" + ChatColor.GOLD + "Olymp" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
-	
+	OLYMPCLASSIC(ChatColor.GRAY + "[" + ChatColor.GOLD + "Olymp" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),	
 	OLYMPRIGHT(ChatColor.GRAY + "[" + ChatColor.GREEN + "Olymp" + ChatColor.GRAY + "]"	+ ChatColor.WHITE + " > " + ChatColor.GRAY),
 	OLYMPERROR(ChatColor.GRAY + "[" + ChatColor.RED + "OlympError" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
 
 	//PARTYTYPE
 	PARTYCLASSIC(ChatColor.GRAY + "[" + ChatColor.DARK_GREEN + "Party" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
 	PARTYRIGHT(ChatColor.GRAY + "[" + ChatColor.GREEN + "Party" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
-	PARTYERROR(ChatColor.GRAY + "[" + ChatColor.RED + "PartyError" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY);
+	PARTYERROR(ChatColor.GRAY + "[" + ChatColor.RED + "PartyError" + ChatColor.GRAY + "]" + ChatColor.WHITE + " > " + ChatColor.GRAY),
+	
+	//UNKNOWCOMMAND
+	UNKNOWCOMMAND("Unknown command. Type \"/help\" for help.");
 
 	private String type;
 

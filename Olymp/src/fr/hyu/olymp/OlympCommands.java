@@ -165,7 +165,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Add an argument. Try /olymp help.");
 				}
 			} else {
-				player.sendMessage("Unknown command. Type \"/help\" for help.");
+				player.sendMessage(ChatManager.MessageType.UNKNOWCOMMAND.getMessage());
 			}
 		}
 		return false;

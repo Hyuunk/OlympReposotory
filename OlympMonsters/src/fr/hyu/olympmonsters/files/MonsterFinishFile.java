@@ -15,7 +15,7 @@ public static boolean monsterFinish(File file, String monster) {
 		
 		try {
 						
-			File newfile = new File(Main.INSTANCE.getDataFolder(), "monsters/" + monster + ".yml");
+			File newfile = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monsters/" + monster + ".yml");
 		
 			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 			FileConfiguration newConfig = YamlConfiguration.loadConfiguration(newfile);
