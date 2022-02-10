@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import fr.hyu.olymp.chat.ChatManager;
+import fr.hyu.olympmonsters.files.MonsterFile;
 import fr.hyu.olympmonsters.files.MonsterFinishFile;
 import fr.hyu.olympperms.players.PlayerRankProfile;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -64,7 +65,9 @@ public class MonsterCommands implements CommandExecutor, Listener {
 
 								File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + newMonster + ".yml");
 								if (!file.exists()) {
-							init(newMonster, entityType);
+							
+									MonsterFile.createMonsterFile(newMonster, entityType);
+									
 							player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage() + "Monster " + ChatColor.BLUE
 									+ newMonster + "'s" + ChatColor.GRAY + " file has been created.");
 							break;
@@ -118,7 +121,9 @@ public class MonsterCommands implements CommandExecutor, Listener {
 						break;
 					}
 					
-				
+				case "SUMMON":
+					
+					break;
 				case "DELETE":
 					
 					if (args.length == 2) {
@@ -189,42 +194,6 @@ public class MonsterCommands implements CommandExecutor, Listener {
 		return false;
 	}
 
-	private void init(String newMonster, String entityType) {
-		
-
-		File file = new File(Main.INSTANCE.getDataFolder(), "OlympMonsters/monstersWIP/" + newMonster + ".yml");
-		if (!file.exists()) {
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			
-			config.set("monsterName", newMonster);	
-			config.set("entityType", entityType);							
-			config.set("description", "to fill");		
-			config.set("stats.level", 0);
-			config.set("stats.vitalityNative", 0);
-			config.set("stats.defenceNative", 0);
-			config.set("stats.strengthNative", 0);
-			config.set("stats.enduranceNative", 0);
-			config.set("stats.intelligenceNative", 0);
-			config.set("stats.manaCapacityNative", 100);
-			config.set("spells.utilisables", "to fill");
-			config.set("equippedItems.mainhand", "to fill");
-			config.set("equippedItems.offhand", "to fill");
-			config.set("equippedItems.head", "to fill");
-			config.set("equippedItems.chest", "to fill");
-			config.set("equippedItems.legs", "to fill");
-			config.set("equippedItems.feet", "to fill");
-			config.set("droppables.golds", 0);
-			config.set("droppables.experiences", 0);
-			config.set("droppables.items", "to fill");
-
-			try {
-				config.save(file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
 	
 //CHECK IF 
 public enum MonsterCommandsName {
@@ -232,6 +201,7 @@ public enum MonsterCommandsName {
 		HELP("help"),
 		CREATE("create"),
 		FINISH("finish"),
+		SUMMON("summon"),
 		DELETE("delete"),
 		FORCEDELETE("forcedelete");
 	
@@ -242,7 +212,7 @@ public enum MonsterCommandsName {
 		 this.name = name;
 		}	
 
-		public String getName( ) {
+		public String getName() {
 			return name;
 		}
 	}
@@ -254,12 +224,76 @@ public boolean isEntity(String entityType) {
 	EntityType type = null;
 	
 	try {
-		type = EntityType.valueOf(entityType.toUpperCase());
-		return true;
 		
+		type = EntityType.valueOf(entityType.toUpperCase());
+		try {
+			
+		notValidateEntityType.valueOf(entityType.toUpperCase());
+			return false;		
+		
+		} catch (IllegalArgumentException e) {
+			
+			return true;
+		}
+			
+		
+			
 	} catch (IllegalArgumentException e) {
 	return false;
+	}	
+}
+
+private enum notValidateEntityType {
+	
+	ARROW(EntityType.ARROW),
+	BOAT(EntityType.BOAT),
+	COMPLEX_PART(EntityType.COMPLEX_PART),
+	DRAGON_FIREBALL(EntityType.DRAGON_FIREBALL),
+	EGG(EntityType.EGG),
+	ENDER_PEARL(EntityType.ENDER_PEARL),
+	ENDER_SIGNAL(EntityType.ENDER_SIGNAL),
+	EVOKER_FANGS(EntityType.EVOKER_FANGS),
+	EXPERIENCE_ORB(EntityType.EXPERIENCE_ORB),
+	FIREBALL(EntityType.FIREBALL),
+	FIREWORK(EntityType.FIREWORK),
+	FISHING_HOOK(EntityType.FISHING_HOOK),
+	ITEM_FRAME(EntityType.ITEM_FRAME),
+	LEASH_HITCH(EntityType.LEASH_HITCH),
+	LIGHTNING(EntityType.LIGHTNING),
+	LINGERING_POTION(EntityType.LINGERING_POTION),
+	LLAMA_SPIT(EntityType.LLAMA_SPIT),
+	MINECART(EntityType.MINECART),
+	MINECART_CHEST(EntityType.MINECART_CHEST),
+	MINECART_COMMAND(EntityType.MINECART_COMMAND),
+	MINECART_FURNACE(EntityType.MINECART_FURNACE),
+	MINECART_HOPPER(EntityType.MINECART_HOPPER),
+	MINECART_MOB_SPAWNER(EntityType.MINECART_MOB_SPAWNER),
+	MINECART_TNT(EntityType.MINECART_TNT),
+	PAINTING(EntityType.PAINTING),
+	PLAYER(EntityType.PLAYER),
+	PRIMED_TNT(EntityType.PRIMED_TNT),
+	SHULKER_BULLET(EntityType.SHULKER_BULLET),
+	SMALL_FIREBALL(EntityType.SMALL_FIREBALL),
+	SNOWBALL(EntityType.SNOWBALL),
+	SPECTRAL_ARROW(EntityType.SPECTRAL_ARROW),
+	SPLASH_POTION(EntityType.SPLASH_POTION),
+	THROWN_EXP_BOTTLE(EntityType.THROWN_EXP_BOTTLE),
+	UNKNOWN(EntityType.UNKNOWN),
+	WEATHER(EntityType.WEATHER),
+	WITHER_SKULL(EntityType.WITHER_SKULL);
+	
+	private EntityType entitytype;
+
+	private notValidateEntityType(EntityType entitytype) {
+		this.entitytype = entitytype;
 	}
+	
+	@SuppressWarnings("unused")
+	public EntityType getNotValidateEntityType() {
+		return entitytype;
+	}
+	
+	
 	
 }
 }

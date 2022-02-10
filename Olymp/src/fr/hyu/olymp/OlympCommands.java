@@ -19,6 +19,8 @@ import fr.hyu.olymp.chat.ChatManager;
 import fr.hyu.olympperms.players.PlayerProfile.Stat;
 import fr.hyu.olympperms.players.PlayerProfileManager;
 import fr.hyu.olympperms.players.PlayerRankProfile;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class OlympCommands implements CommandExecutor, TabCompleter {
 
@@ -46,7 +48,8 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 
 					case "PROUT":
 						Player targetPlayer = Bukkit.getPlayer(args[1]);
-						targetPlayer.sendMessage("tu es gay.");
+						String message = ChatColor.GOLD + "Endurance " + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceNative() + "          " + ChatColor.AQUA + "Mana " + PlayerProfileManager.profiles.get(targetPlayer).getManaOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getManaCapacityNative();
+						player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 						break;
 
 					case "SETSTAT":
@@ -247,6 +250,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 	public enum OlympCommandsName {
 		
 		HELP("help"),
+		PROUT("prout"),
 		GETSTAT("getstat"),
 		SETSTAT("setstat");
 		

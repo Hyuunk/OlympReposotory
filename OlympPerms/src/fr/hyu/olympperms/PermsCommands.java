@@ -18,7 +18,7 @@ public class PermsCommands implements CommandExecutor {
 			PlayerRankProfile.initRank();
 			player.sendMessage(PlayerRankProfile.getPermissions(player).toString());
 		}
-				
+			
 		return false;
 	}
 
