@@ -2,6 +2,8 @@ package fr.hyu.olympmonsters;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.hyu.olymp.party.PartyCommands;
+
 
 public class Main extends JavaPlugin {
 
@@ -11,6 +13,9 @@ public class Main extends JavaPlugin {
 		
 		//commandes
 		getCommand("monster").setExecutor(new MonsterCommands());	
+		
+		//TabCompleters
+		getCommand("monster").setTabCompleter(new MonsterCommands());
 		super.onEnable();
 	}
 	

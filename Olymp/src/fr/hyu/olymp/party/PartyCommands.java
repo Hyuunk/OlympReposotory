@@ -1,18 +1,26 @@
 package fr.hyu.olymp.party;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import fr.hyu.olymp.chat.ChatManager;
+import com.google.common.collect.Lists;
 
-public class PartyCommands implements CommandExecutor {
+import fr.hyu.olymp.OlympCommands.OlympCommandsName;
+import fr.hyu.olymp.chat.ChatManager;
+import fr.hyu.olympperms.players.PlayerRankProfile;
+import fr.hyu.olympperms.players.PlayerProfile.Stat;
+
+public class PartyCommands implements CommandExecutor, TabCompleter {
 
 	private HashMap<Player, Party> partyMember = new HashMap<Player, Party>(); // party chief et party member
 	private HashMap<Player, ArrayList<Player>> partyRequest = new HashMap<Player, ArrayList<Player>>(); // recoit en 1
@@ -34,10 +42,10 @@ public class PartyCommands implements CommandExecutor {
 
 			case "HELP":
 				player.sendMessage(ChatManager.MessageType.PARTYCLASSIC.getMessage() + ChatColor.GRAY.toString() + "Voici la liste des commandes " + ChatColor.DARK_GREEN + ChatColor.BOLD + "Party" + ChatColor.GRAY + " :" 
-			+ newLine + ChatColor.GREEN + "/party invite:" + ChatColor.GRAY + " pour inviter un joueur dans la partie." 
-			+ newLine + ChatColor.GREEN + "/party list:" + ChatColor.GRAY + " pour regarder qui se trouve dans la partie."
-			+ newLine+ ChatColor.GREEN + "/party disband" + ChatColor.GRAY + " pour supprimer la partie."
-			+ newLine + ChatColor.GREEN + "/party join [pseudo]:" + ChatColor.GRAY + " pour rejoindre la partie d'un autre joueur.");
+			+ newLine + ChatColor.GREEN + "/party invite" + ChatColor.GRAY + " pour inviter un joueur dans la partie." 
+			+ newLine + ChatColor.GREEN + "/party members" + ChatColor.GRAY + " pour afficher les membres de votre partie."
+			+ newLine+ ChatColor.GREEN + "/party disband" + ChatColor.GRAY + " pour supprimer/démenteler la partie."
+			+ newLine + ChatColor.GREEN + "/party accept [pseudo]" + ChatColor.GRAY + " pour rejoindre la partie d'un joueur.");
 				break;
 
 			case "INVITE":
@@ -105,7 +113,7 @@ public class PartyCommands implements CommandExecutor {
 					player.sendMessage(ChatColor.DARK_GREEN + "Aucun joueur ne vous a fait d'invation a sa partie");
 					break;
 				}
-			case "LIST":
+			case "MEMBERS":
 				// if (partyMember.containsValue(player);
 
 			}
@@ -113,14 +121,52 @@ public class PartyCommands implements CommandExecutor {
 		return false;
 	}
 	
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+
+		List<String> noArgument = Arrays.asList("");
+		List<String> fList = Lists.newArrayList();			
+
+				
+				if (args.length == 1) {
+					for (PartyCommandsName cmdName : PartyCommandsName.values()) {
+						if (cmdName.getName().toLowerCase().startsWith(args[0]))
+							fList.add(cmdName.getName());
+					} return fList;
+					
+				} else 		
+					
+				switch (args[0].toUpperCase()) {
+				
+				case "HELP":
+					return noArgument;
+					
+				case "INVITE":
+					if (args.length == 2) {
+						
+						for (Player player : Bukkit.getOnlinePlayers()) 
+							fList.add(player.getName());	
+						return fList;
+					} else return noArgument;
+					
+				case "ACCEPT":
+					if (args.length == 2) {
+						
+						for (Player player : Bukkit.getOnlinePlayers()) {
+							fList.add(player.getName());	
+						 return fList;}
+					} return noArgument;				
+				default:
+					return noArgument;				
+		}				
+	}
+	
 public enum PartyCommandsName {
 		
 		HELP("help"),
-		CREATE("create"),
 		INVITE("invite"),
 		ACCEPT("accept"),
-		JOIN("join"),
-		LIST("list"),
+		LEAVE("leave"),
+		MEMBERS("members"),
 		DISBAND("disband");
 		
 		private String name;		

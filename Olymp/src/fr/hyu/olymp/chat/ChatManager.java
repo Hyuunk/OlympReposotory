@@ -14,24 +14,41 @@ public class ChatManager implements Listener{
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
 				
-		String rankPlayer = PlayerProfileManager.profiles.get(event.getPlayer()).getRank().toString().toLowerCase();
+		String rankPlayer = PlayerProfileManager.profiles.get(event.getPlayer()).getRank().toString().toUpperCase();
 		
-		if (rankPlayer.equals("gerant")) {			
-			toFormat(ChatColor.GOLD + "Gérant", event.getPlayer().getName(), event.getMessage(), event);
-		} else if (rankPlayer.equals("responsable")) {
+		switch (rankPlayer) {
+		
+		case "GERANT":
+			toFormat(ChatColor.DARK_PURPLE + "Gérant", event.getPlayer().getName(), event.getMessage(), event);
+			break;
+			
+		case "RESPONSABLE":
 			toFormat(ChatColor.RED + "Responsable", event.getPlayer().getName(), event.getMessage(), event);
-		} else if (rankPlayer.equals("developpeur")) {
-			toFormat(ChatColor.BLUE + "Developpeur", event.getPlayer().getName(), event.getMessage(), event);
-		} else if (rankPlayer.equals("moderateur")) {
+			break;
+			
+		case "DEVELOPPEUR":
+			toFormat(ChatColor.BLUE + "Développeur", event.getPlayer().getName(), event.getMessage(), event);
+			break;
+			
+		case "MODERATEUR":
 			toFormat(ChatColor.YELLOW + "Modérateur", event.getPlayer().getName(), event.getMessage(), event);
-		} else if (rankPlayer.equals("builder")) {
+			break;
+			
+		case "BUILDER":
 			toFormat(ChatColor.LIGHT_PURPLE + "Builder", event.getPlayer().getName(), event.getMessage(), event);
-		} else if (rankPlayer.equals("helper")) {
+			break;
+			
+		case "HELPER":
 			toFormat(ChatColor.GREEN + "Helper", event.getPlayer().getName(), event.getMessage(), event);
-		} else {
-			toFormat(ChatColor.GRAY.toString() + "wip", event.getPlayer().getName(), event.getMessage(), event);
+			break;
 			
+		case "AMI":
+			toFormat(ChatColor.GOLD + "Ami", event.getPlayer().getName(), event.getMessage(), event);
+			break;
 			
+		default:
+			toFormat(ChatColor.GRAY + "Joueur", event.getPlayer().getName(), event.getMessage(), event);			
+			break;		
 				
 		}
 		

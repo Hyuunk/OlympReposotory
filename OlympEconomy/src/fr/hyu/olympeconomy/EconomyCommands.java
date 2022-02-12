@@ -17,10 +17,7 @@ public class EconomyCommands implements CommandExecutor {
 		if (sender instanceof Player) {
 		Player player = (Player) sender;
 		
-		int[] surrogates = {0xD83E, 0xDE99};
-		String coinEmoji = new String(surrogates, 0, surrogates.length);
-		
-		player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + ChatColor.GRAY + "Votre nombre de gold est : " + ChatColor.GOLD + PlayerProfileManager.profiles.get(player).getGold() + "\uf85c"
+		player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + ChatColor.GRAY + "Votre nombre de gold est : " + ChatColor.GOLD + PlayerProfileManager.profiles.get(player).getGold() + " ⛁"
 );
 		}
 		return false;

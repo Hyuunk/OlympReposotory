@@ -1,6 +1,7 @@
 
 package fr.hyu.olymp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,10 +47,10 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 						+ newLine + ChatColor.GOLD + "/olymp getstat:" + ChatColor.GRAY + " pour afficher les caractéristiques d'un joueur.");
 						break;
 
-					case "PROUT":
+					case "TEST":
 						Player targetPlayer = Bukkit.getPlayer(args[1]);
 						String message = ChatColor.GOLD + "Endurance " + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceNative() + "          " + ChatColor.AQUA + "Mana " + PlayerProfileManager.profiles.get(targetPlayer).getManaOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getManaCapacityNative();
-						player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+						targetPlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 						break;
 
 					case "SETSTAT":
@@ -187,11 +188,9 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 
 		List<String> argumentsNumber = Arrays.asList("0");
-		String noArgument = "";
-		List<String> fList = Lists.newArrayList();
-
-		if (sender instanceof Player) {
-			
+		List<String> noArgument = Arrays.asList("");
+		List<String> fList = Lists.newArrayList();	
+		
 			//PERMISSION
 			if (PlayerRankProfile.hasPermission((Player) sender, "olymp.useAdmin")) {
 				
@@ -200,57 +199,69 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 						if (cmdName.getName().toLowerCase().startsWith(args[0]))
 							fList.add(cmdName.getName());
 					} return fList;
-				}
-
-				if (args[0].toUpperCase().equals("HELP")) {
 					
-					if (args.length > 1) {
-						fList.add(noArgument);
-					} return fList;
-
-				} else if (args[0].toUpperCase().equals("SETSTAT")) {
+				} else 		
 					
-					if (args.length == 3) {
-						for (Stat stat : Stat.values()) {
-							if (stat.getStat().toLowerCase().startsWith(args[2]))
-								fList.add(stat.getStat());
-						} return fList;
-						
-					} if (args.length == 4) {
-						for (String s : argumentsNumber) {
-							if (s.toLowerCase().startsWith(args[3]))
-								fList.add(s);
-						} return fList;
-						
-					} if (args.length > 4) {
-						fList.add(noArgument);						
-					} return fList;
-					
-				} else if (args[0].toUpperCase().equals("GETSTAT")) {
-					
-					if (args.length == 3) {
-						for (Stat stat : Stat.values()) {
-							if (stat.getStat().toLowerCase().startsWith(args[2]))
-								fList.add(stat.getStat());
-						} return fList;
-						
-					} if (args.length > 3) {
-						fList.add(noArgument);					
-					} return fList;
-					
-				} return null;
+				switch (args[0].toUpperCase()) {
 				
-			} if (args.length > 0) {
-				fList.add(noArgument);			
-			} return fList;
+				case "HELP":
+					return noArgument;
+				case "TEST":
+					if (args.length == 2) {
+						
+						for (Player player : Bukkit.getOnlinePlayers()) 
+							fList.add(player.getName());	
+						return fList;
+					} else return noArgument;
+					
+				case "SETSTAT":
+					if (args.length == 2) {
+						
+						for (Player player : Bukkit.getOnlinePlayers()) 
+							fList.add(player.getName());	
+						return fList;
+						
+					} else if (args.length == 3) {
+						
+						for (Stat stat : Stat.values()) 
+							if (stat.getStat().toLowerCase().startsWith(args[2]))
+								fList.add(stat.getStat());
+						return fList;
+						
+					} else if (args.length == 4) {
+						
+						return argumentsNumber;
+						
+					} return noArgument;
+					
+				case "GETSTAT":
+					if (args.length == 2) {
+						
+						for (Player player : Bukkit.getOnlinePlayers()) 
+							fList.add(player.getName());	
+						return fList;
+						
+					} else if (args.length == 3) {
+						
+						for (Stat stat : Stat.values()) 
+							if (stat.getStat().toLowerCase().startsWith(args[2]))
+								fList.add(stat.getStat());
+						return fList;
+						
+					} return noArgument;
+					
+				default:
+					return noArgument;
+				}
+			}
 			
-		} return null;
+			return null;				
 	}
 	
 	public enum OlympCommandsName {
 		
 		HELP("help"),
-		PROUT("prout"),
+		TEST("test"),
 		GETSTAT("getstat"),
 		SETSTAT("setstat");
 		
@@ -265,3 +276,4 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 		}
 	}
 }
+	

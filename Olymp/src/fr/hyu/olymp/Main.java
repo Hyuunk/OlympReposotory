@@ -25,6 +25,7 @@ public class Main extends JavaPlugin {
 		
 		//TabCompleters
 		getCommand("olymp").setTabCompleter(new OlympCommands());
+		getCommand("party").setTabCompleter(new PartyCommands());
 		
 		//Listeners
 		getServer().getPluginManager().registerEvents(new ChatManager(), this);

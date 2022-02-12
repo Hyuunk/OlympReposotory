@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 
 public class Party {
 	
-	private String chief;
+	private String owner;
 	private ArrayList<String> members = new ArrayList<String>();
 		
-	public Party(Player chief, String member) {
-		this.chief = chief.getName();
+	public Party(Player owner, String member) {
+		this.owner = owner.getName();
 		this.members.add(member);
 	}
 		
@@ -19,11 +19,11 @@ public class Party {
 	}
 
 	public String getChiefParty() {
-		return chief;
+		return owner;
 	}
 
 	public void setChiefParty(String chiefParty) {
-		this.chief = chiefParty;
+		this.owner = chiefParty;
 	}
 
 	public ArrayList<String> getMembers() {

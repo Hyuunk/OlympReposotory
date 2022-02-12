@@ -2,29 +2,38 @@ package fr.hyu.olympmonsters;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.logging.log4j.core.pattern.EqualsIgnoreCaseReplacementConverter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import com.google.common.collect.Lists;
+
 import fr.hyu.olymp.chat.ChatManager;
 import fr.hyu.olympmonsters.files.MonsterFile;
 import fr.hyu.olympmonsters.files.MonsterFinishFile;
 import fr.hyu.olympperms.players.PlayerRankProfile;
+import fr.hyu.olympperms.players.PlayerProfile.Stat;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import fr.hyu.olymp.Main;
+import fr.hyu.olymp.OlympCommands.OlympCommandsName;
 
-public class MonsterCommands implements CommandExecutor, Listener {
+public class MonsterCommands implements CommandExecutor, Listener, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] args) {
@@ -36,7 +45,7 @@ public class MonsterCommands implements CommandExecutor, Listener {
 			if (PlayerRankProfile.hasPermission(player, "olymp.monster")) {
 
 				//CHECK IF ARGS AND IF ENUM CONTAINS ARGS
-				if (args.length > 0 && EnumUtils.isValidEnum(MonsterCommandsName.class, args[0].toUpperCase())) {
+				if (args.length > 0 && EnumUtils.isValidEnum(MonsterCommandsName.class, args[0].toUpperCase()) | args[0].equalsIgnoreCase("FORCEDELETE")) {
 									
 				//ARGS[0] CHECK
 				switch (args[0].toUpperCase()) {
@@ -194,6 +203,57 @@ public class MonsterCommands implements CommandExecutor, Listener {
 		return false;
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+
+		List<String> noArgument = Arrays.asList("");
+		List<String> fList = Lists.newArrayList();	
+
+		
+			//PERMISSION
+			if (PlayerRankProfile.hasPermission((Player) sender, "olymp.monster")) {
+				
+				if (args.length == 1) {
+					for (MonsterCommandsName cmdName : MonsterCommandsName.values()) {
+						if (cmdName.getName().toLowerCase().startsWith(args[0]))
+							fList.add(cmdName.getName());
+					} return fList;
+					
+				} else 		
+					
+				switch (args[0].toUpperCase()) {
+				
+				case "HELP":
+					return noArgument;
+					
+				case "CREATE":					
+					if (args.length == 3) {						 
+						for (EntityType entitytype : EntityType.values()) {
+							if (isEntity(entitytype.toString()))
+								if(entitytype.toString().toLowerCase().startsWith(args[2])) 
+									fList.add(entitytype.toString().toLowerCase()); 																																
+						} return fList;							
+					} return noArgument;
+					
+				case "FINISH":
+					if (args.length == 2) {
+						//liste de monstre WIP
+					} return noArgument;
+					
+				case "SUMMON":
+					if (args.length == 2) {
+//liste de monstre WIP et non WIP
+					} return noArgument;
+				case "DELETE":
+					break;
+				
+				default:
+					return noArgument;
+				}
+			}
+			
+			return null;				
+	}
 	
 //CHECK IF 
 public enum MonsterCommandsName {
@@ -202,8 +262,7 @@ public enum MonsterCommandsName {
 		CREATE("create"),
 		FINISH("finish"),
 		SUMMON("summon"),
-		DELETE("delete"),
-		FORCEDELETE("forcedelete");
+		DELETE("delete");
 	
 	
 		private String name;		

@@ -27,6 +27,7 @@ public class PlayerRankProfile {
 			configPermissions.set("rank.moderateur.permissions", "null");
 			configPermissions.set("rank.builder.permissions", "null");
 			configPermissions.set("rank.helper.permissions", "null");
+			configPermissions.set("rank.ami.permissions", "null");
 			configPermissions.set("rank.default.permissions", "null");
 
 			try {
@@ -63,7 +64,7 @@ public class PlayerRankProfile {
 
 	public enum Rank {
 
-		GERANT(), RESPONSABLE(), DEVELOPPEUR(), MODERATEUR(), BUILDER(), HELPER(), DEFAULT()
+		GERANT, RESPONSABLE, DEVELOPPEUR, MODERATEUR, BUILDER, HELPER, AMI, DEFAULT
 
 	}
 
