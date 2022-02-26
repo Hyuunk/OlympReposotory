@@ -9,3 +9,7 @@ commands:
     description: Permet de créer une partie avec ses ami(e)s.
   chatcolor:
     description: Affiche la liste des couleurs.
+  setwarp:
+    description: Permet de créer un nouveau warp
+  warp:
+    description: Permet de voir la liste des warps

@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.hyu.olymp.chat.ChatColorCommand;
 import fr.hyu.olymp.chat.ChatManager;
 import fr.hyu.olymp.party.PartyCommands;
+import fr.hyu.olymp.warps.WarpsCommands;
 import fr.hyu.olympperms.players.PlayerRankProfile;
 
 public class Main extends JavaPlugin {
@@ -22,6 +23,8 @@ public class Main extends JavaPlugin {
 		getCommand("olymp").setExecutor(new OlympCommands());
 		getCommand("party").setExecutor(new PartyCommands());	
 		getCommand("chatcolor").setExecutor(new ChatColorCommand());
+		getCommand("setwarp").setExecutor(new WarpsCommands());
+		getCommand("warp").setExecutor(new WarpsCommands());
 		
 		//TabCompleters
 		getCommand("olymp").setTabCompleter(new OlympCommands());
