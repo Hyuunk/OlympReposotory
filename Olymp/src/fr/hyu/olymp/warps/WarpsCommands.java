@@ -31,8 +31,15 @@ public class WarpsCommands implements CommandExecutor {
 					
 					if (args.length > 0) {
 						
-						createWarp(args[0], player.getLocation());
-						player.sendMessage("Vous venez de créer un warp");
+						if (createWarp(args[0], player.getName(), player.getLocation())) {
+							
+							player.sendMessage("Vous venez de créer un warp"); 
+							
+						} else {
+							
+						player.sendMessage("Le warp existe déjà");
+						
+						}
 						
 					} else {
 						//si le warp existe déjà
@@ -41,8 +48,8 @@ public class WarpsCommands implements CommandExecutor {
 					}
 					
 				} else if (cmd.getLabel().equals("warp")) {
-					
-					player.teleport(toWarp(args[0]));
+
+					player.teleport(toWarp(args[0].toString()));
 					player.sendMessage("Vous venez de vous téléporter");
 					
 					
@@ -52,40 +59,46 @@ public class WarpsCommands implements CommandExecutor {
 		return false;
 	}
 
-	public static void createWarp(String name, Location location) {
+	public static boolean createWarp(String nameWarp, String namePlayer, Location location) {
 		
-		File file = new File(Main.INSTANCE.getDataFolder(), "Olymp/warps.yml");
+		File file = new File(Main.INSTANCE.getDataFolder(), "Olymp/warps.yml");		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+			if (config.getString("warps." + nameWarp + ".author") == null) {
 				
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			
-			config.set("warps." + name + ".location", location);
-			
+			config.set("warps." + nameWarp + ".location.world", location.getWorld().getName());
+			config.set("warps." + nameWarp + ".location.x", location.getX());
+			config.set("warps." + nameWarp + ".location.y", location.getY());
+			config.set("warps." + nameWarp + ".location.z", location.getZ());
+			config.set("warps." + nameWarp + ".location.yaw", location.getYaw());
+			config.set("warps." + nameWarp + ".location.pitch", location.getPitch());
+			config.set("warps." + nameWarp + ".author", namePlayer);
+					
 			try {
 				config.save(file);
 			} catch (IOException e) {
 				e.printStackTrace();
+			}	
+			
+			return true;
 			}
-		
-		
-		return;
+			
+			System.out.println('e');
+		return false;
 	}
 	
+	
 	public static Location toWarp(String name) {
-		
-		
-		
-		File file = new File(Main.INSTANCE.getDataFolder(), "Olymp/warps.yml");
-		
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+				
+		File file = new File(Main.INSTANCE.getDataFolder(), "Olymp/warps.yml");		
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-		Location location;
-		location = new Location(Bukkit.getWorld(
-			config.getString("warps" + name + ".location.world")),
-			config.getDouble("warps" + name + ".location.x"), 
-			config.getDouble("warps" + name + ".location.y"), 
-			config.getDouble("warps" + name + ".location.z"), 
-			config.getInt("warps" + name + ".location.pitch"), 
-			config.getInt("warps" + name + ".location.yaw"));
+		World world = Bukkit.getWorld(config.getString("warps." + name + ".location.world"));
+		double x = config.getDouble("warps." + name + ".location.x");
+		double y = config.getDouble("warps." + name + ".location.y");
+		double z = config.getDouble("warps." + name + ".location.z");
+		float yaw = (float) config.getDouble("warps." + name + ".location.yaw");
+		float pitch = (float) config.getDouble("warps." + name + ".location.pitch");
+		Location location = new Location(world, x, y, z, yaw, pitch);
 
       
 		return location;
