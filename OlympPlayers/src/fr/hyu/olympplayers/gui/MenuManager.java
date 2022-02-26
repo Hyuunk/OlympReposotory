@@ -106,7 +106,7 @@ public class MenuManager implements Listener {
 		
 		InventoryList.inventoryMenu.getInventory().setItem(15, GuiItem.createGuiItem(Material.BOOK_AND_QUILL, ChatColor.LIGHT_PURPLE + "Quêtes",""));
 		
-		InventoryList.inventoryMenu.getInventory().setItem(16, GuiItem.createGuiItem(Material.EMPTY_MAP, "Map", ""));		
+		InventoryList.inventoryMenu.getInventory().setItem(16, GuiItem.createGuiItem(Material.EMPTY_MAP, ChatColor.WHITE + "Map", ""));		
 		
 		InventoryList.inventoryMenu.getInventory().setItem(22, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 		

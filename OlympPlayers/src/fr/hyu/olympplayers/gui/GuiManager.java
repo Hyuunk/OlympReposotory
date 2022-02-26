@@ -22,8 +22,6 @@ public class GuiManager implements Listener {
 	public void onInventoryClick(InventoryClickEvent event) {
 		
 		ItemStack clickedItem = event.getCurrentItem();
-		Material materialItem = clickedItem.getType();
-		String nameItem = clickedItem.getItemMeta().getDisplayName();
 		Player player = (Player) event.getWhoClicked();
 		
 		if (getListInventory().contains(event.getInventory())) {
@@ -33,19 +31,26 @@ public class GuiManager implements Listener {
 			if (clickedItem == null || clickedItem.getType() == Material.AIR) {
 				return;
 			} else {
-				switch (event.getInventory().getName().toUpperCase()) {
-					case "PLAYER MENU":
-						if (materialItem == Material.BARRIER && nameItem.equals(ChatColor.DARK_RED + "Quitter")) {
-							closeInventory(player);
-						}
+				
+				String nameItem = clickedItem.getItemMeta().getDisplayName();
+				Material materialItem = clickedItem.getType();
+				
+				if (materialItem == Material.BARRIER && nameItem.equals(ChatColor.DARK_RED + "Quitter")) {
+					closeInventory(player);
+				} else {
+					
+				switch (event.getInventory().getName()) {
+					case "Player Menu":
+					
 						break;
+						
 					case "Player Menu (devmod)":
 						
 						break;
 				}
 						
 			}			
-
+		}
 
 		player.sendMessage("You clicked at slot " + event.getRawSlot());
 	}
