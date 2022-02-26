@@ -5,3 +5,33 @@ main: fr.hyu.olympmonsters.Main
 commands:
   monster:
     description: Permet d'avoir accès aux commandes monsters.
+permissions:
+    olympmonsters.*:
+        default: false
+        children:
+            olympmonsters.summon: true
+            olympmonsters.create: true
+            olympmonsters.finish: true
+            olympmonsters.help: true
+            olympmonsters.delete: true
+ 
+ 
+    olympmonsters.summon:
+        description: "fait apparaitre un monstre"
+        default: false
+ 
+    olympmonsters.create:
+        description: "fait apparaitre un monstre"
+        default: false
+ 
+    olympmonsters.finish:
+        description: "fait apparaitre un monstre"
+        default: false
+ 
+    olympmonsters.help:
+        description: "fait apparaitre un monstre"
+        default: false
+ 
+    olympmonsters.delete:
+        description: "fait apparaitre un monstre"
+        default: false

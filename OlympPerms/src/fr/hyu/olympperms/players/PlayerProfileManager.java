@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import fr.hyu.olympperms.Main;
+
 
 public class PlayerProfileManager implements Listener{
 
@@ -19,7 +21,7 @@ public class PlayerProfileManager implements Listener{
 		Player player = event.getPlayer();
 		PlayerProfile getProfile = new PlayerProfile(player);
 		profiles.put(player, getProfile);
-		
-	}
-
-}
+		player.addAttachment(Main.INSTANCE, "olymp.basics", false);
+		player.recalculatePermissions();
+		}
+}	

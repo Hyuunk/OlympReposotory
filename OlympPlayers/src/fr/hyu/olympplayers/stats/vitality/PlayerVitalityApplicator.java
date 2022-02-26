@@ -2,31 +2,27 @@ package fr.hyu.olympplayers.stats.vitality;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import fr.hyu.olympperms.players.PlayerProfileManager;
 import fr.hyu.olympperms.players.PlayerRankProfile;
 
-public class PlayerStrengthApplicator implements Listener {
+public class PlayerVitalityApplicator implements Listener {
 	@EventHandler
-	public void onHit(EntityDamageByEntityEvent event) {
+	public void onInteractEquipement(PlayerInteractEvent event) {
 		
-		if (event.getDamager() instanceof Player) {
-Player player = (Player) event.getDamager();
-		
-			if (PlayerRankProfile.hasPermission(player, "olymp.reportMessage")) {
-				player.sendMessage(ChatColor.GRAY + "dealBeforeCalculating: " + event.getDamage());
-			}
-			
-			// Damage calculator
-		event.setDamage(event.getDamage() + PlayerProfileManager.profiles.get(player).getStrengthNative());
-		
-		
-		if (PlayerRankProfile.hasPermission(player, "olymp.reportMessage"))
-			player.sendMessage(ChatColor.GRAY + "dealAfterCalculating: " + event.getDamage());
+
 		}
-		}
+	
+	@EventHandler
+	public void on(InventoryClickEvent event) {
+		
+	}
+	
 	}
 

@@ -7,18 +7,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+
+import fr.hyu.olympplayers.gui.GuiManager.InventoryList;
 
 
 public class MenuManager implements Listener {
@@ -36,9 +35,8 @@ public class MenuManager implements Listener {
 				loresList.add("Cliquez sur l'étoile du nether pour ouvrir votre menu de joueur.");
 
 				if (event.getItem().getItemMeta().getLore().equals(loresList)) {
-
-					MenuGuiSummoner();
-					openInventory(event.getPlayer());
+					MenuGuiSummoner(event.getPlayer());
+					GuiManager.openInventory(event.getPlayer(), InventoryList.inventoryMenu.getInventory());
 				}
 
 			} catch (NullPointerException e) {
@@ -86,55 +84,39 @@ public class MenuManager implements Listener {
 						event.setCancelled(true);
 
 				} catch (NullPointerException e) {
-					System.out.println(" error inventory ");
+					
 				}
 		}
 	}
 
 	// INVENTORY CREATOR
-	private Inventory inv;
 
-	public void MenuGuiSummoner() {
-
-		inv = Bukkit.createInventory(null, 9, "MENU");
-
-		initializeMenuItems();
+	public void MenuGuiSummoner(Player player) {
+		
+		initializeMenuItems(player);
 	}
 
-	public void initializeMenuItems() {
+	public void initializeMenuItems(Player player) {
 
-		inv.setItem(1, GuiItem.createGuiItem(Material.DIAMOND_SWORD, "Example Sword", "§aFirst line of the lore",
-				"§bSecond line of the lore"));
-		inv.setItem(3, GuiItem.createGuiItem(Material.IRON_HELMET, "§bExample Helmet", "§aFirst line of the lore",
-				"§bSecond line of the lore"));
-	}
-
-	public void openInventory(final HumanEntity entity) {
-		entity.openInventory(inv);
-	}
-
-	@EventHandler
-	public void onInventoryClick(final InventoryClickEvent event) {
-		if (!event.getInventory().equals(inv))
-			return;
-
-		event.setCancelled(true);
-
-		final ItemStack clickedItem = event.getCurrentItem();
-
-		if (clickedItem == null || clickedItem.getType() == Material.AIR)
-			return;
-
-		final Player player = (Player) event.getWhoClicked();
-
-		player.sendMessage("You clicked at slot " + event.getRawSlot());
-	}
-
-	@EventHandler
-	public void onInventoryClick(final InventoryDragEvent event) {
-		if (event.getInventory().equals(inv)) {
-			event.setCancelled(true);
+		InventoryList.inventoryMenu.getInventory().setItem(4, GuiItem.createHeadItem(Material.SKULL_ITEM, player, ChatColor.GREEN + "Profile", ChatColor.WHITE + "Description " + player.getName()));
+		
+		InventoryList.inventoryMenu.getInventory().setItem(10, GuiItem.createGuiItem(Material.EXP_BOTTLE, ChatColor.BLUE + "Statistiques", ""));
+		
+		InventoryList.inventoryMenu.getInventory().setItem(11, GuiItem.createGuiItem(Material.BREWING_STAND_ITEM, ChatColor.GREEN + "Métiers", ""));
+		
+		InventoryList.inventoryMenu.getInventory().setItem(15, GuiItem.createGuiItem(Material.BOOK_AND_QUILL, ChatColor.LIGHT_PURPLE + "Quêtes",""));
+		
+		InventoryList.inventoryMenu.getInventory().setItem(16, GuiItem.createGuiItem(Material.EMPTY_MAP, "Map", ""));		
+		
+		InventoryList.inventoryMenu.getInventory().setItem(22, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
+		
+		InventoryList.inventoryMenu.getInventory().setItem(23, GuiItem.createGuiItem(Material.REDSTONE_COMPARATOR, ChatColor.RED + "Paramètres", ""));
+		
+		if (player.isOp()) {
+			InventoryList.inventoryMenu.getInventory().setItem(21, GuiItem.createGuiItem(Material.COMMAND, ChatColor.GOLD + "DevMod", ""));
 		}
+		
 	}
+
 
 }

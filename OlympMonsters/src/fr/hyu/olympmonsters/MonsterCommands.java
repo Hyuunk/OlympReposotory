@@ -1,37 +1,31 @@
 package fr.hyu.olympmonsters;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
-import org.apache.logging.log4j.core.pattern.EqualsIgnoreCaseReplacementConverter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permissible;
 
 import com.google.common.collect.Lists;
 
+import fr.hyu.olymp.Main;
 import fr.hyu.olymp.chat.ChatManager;
 import fr.hyu.olympmonsters.files.MonsterFile;
 import fr.hyu.olympmonsters.files.MonsterFinishFile;
 import fr.hyu.olympperms.players.PlayerRankProfile;
-import fr.hyu.olympperms.players.PlayerProfile.Stat;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
-import fr.hyu.olymp.Main;
-import fr.hyu.olymp.OlympCommands.OlympCommandsName;
 
 public class MonsterCommands implements CommandExecutor, Listener, TabCompleter {
 
@@ -43,9 +37,11 @@ public class MonsterCommands implements CommandExecutor, Listener, TabCompleter 
 			
 			// PERMISSION
 			if (PlayerRankProfile.hasPermission(player, "olymp.monster")) {
-
+		//		if (MonsterCommandsName.isGrantedTo(player)) {
+					
+		//		}
 				//CHECK IF ARGS AND IF ENUM CONTAINS ARGS
-				if (args.length > 0 && EnumUtils.isValidEnum(MonsterCommandsName.class, args[0].toUpperCase()) | args[0].equalsIgnoreCase("FORCEDELETE")) {
+				if (args.length > 0 | args[0].equalsIgnoreCase("FORCEDELETE")) {
 									
 				//ARGS[0] CHECK
 				switch (args[0].toUpperCase()) {
@@ -185,14 +181,17 @@ public class MonsterCommands implements CommandExecutor, Listener, TabCompleter 
 								+ "Argument's Error. Try /monster delete <name>.");
 						break;
 					}	
-					
+				default:
+					player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage() + "Not valid argument. Try /olymp help");
+					break;
+				
 				}						
 				} else {
 					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Add an argument. Try /monster help.");
 					return false;
-				}
-	
 				
+	
+}
 			} else {
 				player.sendMessage(ChatManager.MessageType.UNKNOWCOMMAND.getMessage());
 				return false;
@@ -258,22 +257,35 @@ public class MonsterCommands implements CommandExecutor, Listener, TabCompleter 
 //CHECK IF 
 public enum MonsterCommandsName {
 		
-		HELP("help"),
-		CREATE("create"),
-		FINISH("finish"),
-		SUMMON("summon"),
-		DELETE("delete");
+		HELP("help", "olympmonsters.help"),
+		CREATE("create", "olympmonsters.create"),
+		FINISH("finish", "olympmonsters.finish"),
+		SUMMON("summon", "olympmonsters.summon"),
+		DELETE("delete", "olympmonsters.delete");
 	
 	
 		private String name;		
+		private String permission;
 		
-		private MonsterCommandsName(String name) {
+		MonsterCommandsName(String name, String permission) {
 		 this.name = name;
+		 this.permission = permission;
 		}	
 
 		public String getName() {
 			return name;
 		}
+		
+		public String getPermission() {
+			return permission;
+		}
+
+		 public boolean isGrantedTo(Permissible permissible) {
+		    
+		       if (permissible.hasPermission(permission))
+		    	   return true;
+		       return false;
+		 }
 	}
 
 

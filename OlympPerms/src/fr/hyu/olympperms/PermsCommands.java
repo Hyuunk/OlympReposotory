@@ -12,13 +12,26 @@ public class PermsCommands implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] args) {
 		
+		if (sender instanceof Player) {
 		Player player = (Player) sender;
 
-		if (cmd.getLabel().equalsIgnoreCase("perms")) {
-			PlayerRankProfile.initRank();
-			player.sendMessage(PlayerRankProfile.getPermissions(player).toString());
-		}
+		if (args.length > 0) {
 			
+			switch (args[0].toUpperCase()) {
+			case "SETRANK":
+				break;
+			case "RELOADPERMS":
+				break;
+			case "ADDPERMS":
+				break;
+			case "DELPERMS":
+				break;
+			default:
+			}
+		}
+		
+		return false;
+	}
 		return false;
 	}
 

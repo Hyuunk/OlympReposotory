@@ -38,8 +38,8 @@ public class ChatManager implements Listener{
 			toFormat(ChatColor.LIGHT_PURPLE + "Builder", event.getPlayer().getName(), event.getMessage(), event);
 			break;
 			
-		case "HELPER":
-			toFormat(ChatColor.GREEN + "Helper", event.getPlayer().getName(), event.getMessage(), event);
+		case "ASSISTANT":
+			toFormat(ChatColor.GREEN + "Assistant", event.getPlayer().getName(), event.getMessage(), event);
 			break;
 			
 		case "AMI":

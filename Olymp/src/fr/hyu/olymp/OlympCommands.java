@@ -35,7 +35,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 			if (PlayerRankProfile.hasPermission(player, "olymp.useAdmin")) {
 				
 				//CHECK IF ARGS AND IF ENUM CONTAINS ARGS
-				if (args.length > 0 && EnumUtils.isValidEnum(OlympCommandsName.class, args[0].toUpperCase())) {
+				if (args.length > 0) {
 					
 					//ARGS[0] CHECK
 					switch (args[0].toUpperCase()) {
@@ -162,12 +162,17 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 							player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 									+ "Argument's Error. Try /olymp getstat [<targetPlayer>] <stat>.");
 							break;
-						}						
+						}	
+					default:
+						
+						player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage() + "Not valid argument. Try /olymp help");
+						break;
 					
 					}	
 				} else {
 					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Add an argument. Try /olymp help.");
 				}
+				
 			} else {
 				player.sendMessage(ChatManager.MessageType.UNKNOWCOMMAND.getMessage());
 			}

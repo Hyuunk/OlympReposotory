@@ -2,3 +2,6 @@ name: OlympPlayers
 version: 1
 author: Hyu
 main: fr.hyu.olympplayers.Main
+commands:
+  test:
+    description: test
