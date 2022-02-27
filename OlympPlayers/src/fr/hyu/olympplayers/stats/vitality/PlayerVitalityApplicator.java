@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import fr.hyu.olympperms.players.PlayerProfileManager;
@@ -20,9 +21,11 @@ public class PlayerVitalityApplicator implements Listener {
 		}
 	
 	@EventHandler
-	public void on(InventoryClickEvent event) {
+	public void onDragEquipement(InventoryDragEvent event) {
 		
 	}
 	
 	}
+
+
 

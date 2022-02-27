@@ -166,13 +166,13 @@ public class GuiManager implements Listener {
 		return inventoryHashMap;
 	}
 	
-	public static void initialize(Player player, Inventory inventory) {
+	public static void toOpen(Player player, Inventory inventory) {
 		
 		if (getListInventory().contains(inventory)) {
 			
 		switch (getHashMapInventory().get(inventory)) {
 					
-			case inventoryJobs: MenuManager.initializeJobsMenuItems(player);				
+			case inventoryJobs: MenuManager.initializeJobsMenuItems(player);
 				break;		
 			case inventoryJobsDevMod: MenuManager.initializeJobsMenuDevItems(player);				
 				break;				
@@ -196,14 +196,13 @@ public class GuiManager implements Listener {
 				break;
 			case inventoryStatsDevMod: MenuManager.initializeStatsMenuDevItems(player);
 				break;
-				// No return
-			case inventoryNot: 		
-				break;	
 				// Error Return
 			default: System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory initialize path not defined");
 				break;
 
-			}
+			}	
+		
+			GuiManager.openInventory(player, inventory);
 			
 		} else {
 			System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory not recognized");

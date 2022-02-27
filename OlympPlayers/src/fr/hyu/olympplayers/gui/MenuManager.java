@@ -36,7 +36,7 @@ public class MenuManager implements Listener {
 				loresList.add("Cliquez sur l'étoile du nether pour ouvrir votre menu de joueur.");
 
 				if (event.getItem().getItemMeta().getLore().equals(loresList)) {
-					GuiSummoner(event.getPlayer(), InventoryList.inventoryPlayerMenu.getInventory());
+					GuiManager.toOpen(event.getPlayer(), InventoryList.inventoryPlayerMenu.getInventory());
 				}
 
 			} catch (NullPointerException e) {
@@ -96,30 +96,30 @@ public class MenuManager implements Listener {
 		switch (material) {
 		
 		case SKULL_ITEM:
-			GuiSummoner(player, InventoryList.inventoryProfile.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryProfile.getInventory());
 			break;
 			
 		case EXP_BOTTLE:
-			GuiSummoner(player, InventoryList.inventoryStats.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryStats.getInventory());
 			break;
 			
 		case BREWING_STAND_ITEM:
-			GuiSummoner(player, InventoryList.inventoryJobs.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryJobs.getInventory());
 			break;
 			
 		case BOOK_AND_QUILL:
-			GuiSummoner(player, InventoryList.inventoryQuests.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryQuests.getInventory());
 			break;
 			
 		case EMPTY_MAP:
 			break;
 			
 		case REDSTONE_COMPARATOR:
-			GuiSummoner(player, InventoryList.inventorySettings.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventorySettings.getInventory());
 			break;
 			
 		case COMMAND:
-			GuiSummoner(player, InventoryList.inventoryPlayerMenuDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryPlayerMenuDevMod.getInventory());
 			break;
 		}
 		
@@ -130,43 +130,35 @@ public class MenuManager implements Listener {
 		switch (material) {
 		
 		case SKULL_ITEM:
-			GuiSummoner(player, InventoryList.inventoryProfileDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryProfileDevMod.getInventory());
 			break;
 			
 		case EXP_BOTTLE:
-			GuiSummoner(player, InventoryList.inventoryStatsDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryStatsDevMod.getInventory());
 			break;
 			
 		case BREWING_STAND_ITEM:
-			GuiSummoner(player, InventoryList.inventoryJobsDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryJobsDevMod.getInventory());
 			break;
 			
 		case BOOK_AND_QUILL:
-			GuiSummoner(player, InventoryList.inventoryQuestsDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryQuestsDevMod.getInventory());
 			break;
 			
 		case EMPTY_MAP:
 			break;
 			
 		case REDSTONE_COMPARATOR:
-			GuiSummoner(player, InventoryList.inventorySettingsDevMod.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventorySettingsDevMod.getInventory());
 			break;
 
 		case GRASS:
-			GuiSummoner(player, InventoryList.inventoryPlayerMenu.getInventory());
+			GuiManager.toOpen(player, InventoryList.inventoryPlayerMenu.getInventory());
 			break;
 		}
 	}
 	
-	// INVENTORY CREATOR
-
-	public static void GuiSummoner(Player player, Inventory inventory) {
-		
-		GuiManager.initialize(player, inventory);
-		GuiManager.openInventory(player, inventory);
-
-	}
-	
+	// INVENTORY CREATOR	
 
 	public static void initializePlayerMenuItems(Player player) {
 

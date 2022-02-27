@@ -10,12 +10,13 @@ import fr.hyu.olympperms.players.PlayerProfileManager;
 import fr.hyu.olympperms.players.PlayerRankProfile;
 
 public class PlayerStrengthApplicator implements Listener {
+	
 	@EventHandler
 	public void onHit(EntityDamageByEntityEvent event) {
 		
-		if (event.getDamager() instanceof Player) {
-Player player = (Player) event.getDamager();
-		
+	if (event.getDamager() instanceof Player) {
+			Player player = (Player) event.getDamager();
+	
 			if (PlayerRankProfile.hasPermission(player, "olymp.reportMessage")) {
 				player.sendMessage(ChatColor.GRAY + "dealBeforeCalculating: " + event.getDamage());
 			}

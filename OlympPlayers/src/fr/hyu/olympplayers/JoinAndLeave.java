@@ -33,6 +33,8 @@ public class JoinAndLeave implements Listener {
 		item.setItemMeta(meta);
 		player.getInventory().setItem(8, item);
 		
+		//METTRE TOUT LES INIT ICI POUR PERFS
+		
 	}
 	
 	@EventHandler
