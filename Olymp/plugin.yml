@@ -13,3 +13,11 @@ commands:
     description: Permet de créer un nouveau warp
   warp:
     description: Permet de voir la liste des warps
+  gms:
+    description: met le joueur en mode survie
+  gmc:
+    description: met le joueur en mode créatif
+  gma:
+    description: met le joueur en mode aventure
+  gmsp:
+    description: met le joueur en mode spectateur
