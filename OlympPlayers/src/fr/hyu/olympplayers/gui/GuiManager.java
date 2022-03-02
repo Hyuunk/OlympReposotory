@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -17,6 +16,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import fr.hyu.olympperms.players.PlayerProfileManager;
+import fr.hyu.olympplayers.gui.GuiManager.InventoryTypeList;
+
 public class GuiManager implements Listener {
 	
 	@EventHandler
@@ -25,7 +27,7 @@ public class GuiManager implements Listener {
 		ItemStack clickedItem = event.getCurrentItem();
 		Player player = (Player) event.getWhoClicked();
 		
-		if (getListInventory().contains(event.getInventory())) {			
+		if (PlayerProfileManager.profiles.get(player).getInventories().contains(event.getInventory())) {			
 			event.setCancelled(true);
 			
 			if (clickedItem == null || clickedItem.getType() == Material.AIR) {
@@ -68,14 +70,10 @@ public class GuiManager implements Listener {
 	
 	
 	
-	
-	
-	
-	
-	
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
-		if (getListInventory().contains(event.getInventory())) {
+		Player player = (Player) event.getWhoClicked();
+		if (PlayerProfileManager.profiles.get(player).getInventories().contains(event.getInventory())) {
 			event.setCancelled(true);
 		}
 	}			
@@ -88,126 +86,124 @@ public class GuiManager implements Listener {
 		entity.closeInventory();
 	}
 	
-	public enum InventoryList {
+	public enum InventoryTypeList { //PRIVATE INV
 		
-		inventoryNot(null, 0, "null"),
-		inventoryPlayerMenu(null, 36, "Player Menu"),
-		inventoryPlayerMenuDevMod(null, 36, "Player Menu (devmod)"),
-		inventoryProfile(null, 54, "Profile"),
-		inventoryProfileDevMod(null, 54, "Profile (devmod)"),
-		inventoryStats(null, 54, "Stats"),
-		inventoryStatsDevMod(null, 54, "Stats (devmod)"),
-		inventoryJobs(null, 54, "Jobs"),
-		inventoryJobsDevMod(null, 54, "Jobs (devmod)"),
-		inventoryQuests(null, 54, "Quests"),
-		inventoryQuestsDevMod(null, 54, "Quests (devmod)"),
-		inventorySettings(null, 54, "Settings"),
-		inventorySettingsDevMod(null, 54, "Settings (devmod)");
+		inventoryNot(0, "null"),
+		inventoryPlayerMenu(36, "Player Menu"),
+		inventoryPlayerMenuDevMod(36, "Player Menu (devmod)"),
+		inventoryProfile(54, "Profile"),
+		inventoryProfileDevMod(54, "Profile (devmod)"),
+		inventoryStats(54, "Stats"),
+		inventoryStatsDevMod(54, "Stats (devmod)"),
+		inventoryJobs(54, "Jobs"),
+		inventoryJobsDevMod(54, "Jobs (devmod)"),
+		inventoryQuests(54, "Quests"),
+		inventoryQuestsDevMod(54, "Quests (devmod)"),
+		inventorySettings(54, "Settings"),
+		inventorySettingsDevMod(54, "Settings (devmod)");
 		
-		private Inventory inventory;
-		private InventoryHolder inventoryHolder;
 		private int slotNumber;
 		private String inventoryName;
-	
 		
-		InventoryList(InventoryHolder inventoryHolder, int slotNumber, String inventoryName) {
-			this.inventory = Bukkit.createInventory(inventoryHolder, slotNumber, inventoryName);
-			this.inventoryHolder = inventoryHolder;
+		InventoryTypeList(int slotNumber, String inventoryName) {
 			this.slotNumber = slotNumber;
 			this.inventoryName = inventoryName;
 		}	
-
-		public Inventory getInventory() {
-			return inventory;
+			
+		public Inventory createInventory(Player player) {
+			return Bukkit.createInventory(player, slotNumber, inventoryName);
 		}
-		
-		public InventoryHolder getInventoryHolder() {
-			return inventoryHolder;
-		}
-
+			
 		public int getSlotNumber() {
 			return slotNumber;
 		}
 
 		public String getInventoryName() {
 			return inventoryName;
-		}
+		}		
 	}
+
 	
-	public static List<Inventory> getListInventory() {
-		List<Inventory> inventoryList = new ArrayList<Inventory>();
-		for (InventoryList inventory : InventoryList.values()) {
-			inventoryList.add(inventory.getInventory());			
-		}
-		return inventoryList;
-	}	
-	
-	public static List<String> getListNameInventory() {
+
+	public static List<String> getListNameInventory(Player player) {
+		
 		List<String> inventoryList = new ArrayList<String>();
-		for (InventoryList inventory : InventoryList.values()) {
-			inventoryList.add(inventory.getInventoryName());			
+		
+		for (int i = 0; i < PlayerProfileManager.profiles.get(player).getInventories().size(); i++) {
+			inventoryList.add(PlayerProfileManager.profiles.get(player).getInventories().get(i).getName());
 		}
+		
 		return inventoryList;
 	}
-	
-	public static HashMap<Inventory, InventoryList> getHashMapInventory() {
-		HashMap<Inventory, InventoryList> inventoryHashMap = new HashMap<Inventory, InventoryList>();
-		for (InventoryList inventory : InventoryList.values()) {
-			inventoryHashMap.put(inventory.getInventory(), inventory);
+
+	public static boolean isInventoryType(Inventory inventory) {
+		
+		String inventoryName = inventory.getName();
+		int inventorySize = inventory.getSize();
+		
+		for (InventoryTypeList inv : InventoryTypeList.values()) {
+			if(inv.getSlotNumber() == inventorySize && inv.getInventoryName() == inventoryName) {
+				return true;
+			}
 		}
-		return inventoryHashMap;
+		return false;
 	}
 	
-	public static HashMap<String, InventoryList> getHashMapNameInventory() {
-		HashMap<String, InventoryList> inventoryHashMap = new HashMap<String, InventoryList>();
-		for (InventoryList inventory : InventoryList.values()) {
-			inventoryHashMap.put(inventory.getInventoryName(), inventory);
+	public static InventoryTypeList getInventoryType(Inventory inventory) {
+		
+		String inventoryName = inventory.getName();
+		int inventorySize = inventory.getSize();
+		
+		for (InventoryTypeList inv : InventoryTypeList.values()) {
+			if(inv.getSlotNumber() == inventorySize && inv.getInventoryName() == inventoryName) {
+				return inv;
+			}
 		}
-		return inventoryHashMap;
+		return InventoryTypeList.inventoryNot;
 	}
+	
 	
 	public static void toOpen(Player player, Inventory inventory) {
-		
-		if (getListInventory().contains(inventory)) {
-			
-		switch (getHashMapInventory().get(inventory)) {
-					
-			case inventoryJobs: MenuManager.initializeJobsMenuItems(player);
+
+		if (isInventoryType(inventory)) {
+									
+		switch (getInventoryType(inventory)) {
+				
+			case inventoryJobs: MenuManager.initializeJobsMenuItems(player, inventory);
 				break;		
-			case inventoryJobsDevMod: MenuManager.initializeJobsMenuDevItems(player);				
+			case inventoryJobsDevMod: MenuManager.initializeJobsMenuDevItems(player, inventory);				
 				break;				
-			case inventoryPlayerMenu: MenuManager.initializePlayerMenuItems(player);				
+			case inventoryPlayerMenu: MenuManager.initializePlayerMenuItems(player, inventory);				
 				break;
-			case inventoryPlayerMenuDevMod: MenuManager.initializePlayerMenuDevItems(player);				
+			case inventoryPlayerMenuDevMod: MenuManager.initializePlayerMenuDevItems(player, inventory);				
 				break;
-			case inventoryProfile: MenuManager.initializeProfileMenuItems(player);	 			
+			case inventoryProfile: MenuManager.initializeProfileMenuItems(player, inventory);	 			
 				break;
-			case inventoryProfileDevMod: MenuManager.initializeProfileMenuDevItems(player);				
+			case inventoryProfileDevMod: MenuManager.initializeProfileMenuDevItems(player, inventory);				
 				break;
-			case inventoryQuests: MenuManager.initializeQuestsMenuItems(player);
+			case inventoryQuests: MenuManager.initializeQuestsMenuItems(player, inventory);
 				break;
-			case inventoryQuestsDevMod: MenuManager.initializeQuestsMenuDevItems(player);
+			case inventoryQuestsDevMod: MenuManager.initializeQuestsMenuDevItems(player, inventory);
 				break;
-			case inventorySettings: MenuManager.initializeSettingsMenuItems(player);
+			case inventorySettings: MenuManager.initializeSettingsMenuItems(player, inventory);
 				break;
-			case inventorySettingsDevMod: MenuManager.initializeSettingsMenuDevItems(player);
+			case inventorySettingsDevMod: MenuManager.initializeSettingsMenuDevItems(player, inventory);
 				break;
-			case inventoryStats: MenuManager.initializeStatsMenuItems(player);
+			case inventoryStats: MenuManager.initializeStatsMenuItems(player, inventory);
 				break;
-			case inventoryStatsDevMod: MenuManager.initializeStatsMenuDevItems(player);
+			case inventoryStatsDevMod: MenuManager.initializeStatsMenuDevItems(player, inventory);
 				break;
 				// Error Return
 			default: System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory initialize path not defined");
 				break;
-
+				
 			}	
 		
-			GuiManager.openInventory(player, inventory);
-			
+		player.openInventory(inventory);
+		
 		} else {
-			System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory not recognized");
+			
+			System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventoryType not recognized");
 		}
-		
-		
-	}
+	}	
 }

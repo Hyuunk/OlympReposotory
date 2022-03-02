@@ -3,7 +3,6 @@ package fr.hyu.olympplayers.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -18,7 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 
 import fr.hyu.olympperms.players.PlayerProfileManager;
-import fr.hyu.olympplayers.gui.GuiManager.InventoryList;
+import fr.hyu.olympplayers.gui.GuiManager.InventoryTypeList;
 
 
 public class MenuManager implements Listener {
@@ -26,6 +25,8 @@ public class MenuManager implements Listener {
 	@EventHandler
 	public void onClickMenu(PlayerInteractEvent event) {
 
+		Player player = (Player) event.getPlayer();
+		
 		if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
 				&& event.getItem() != null && event.getItem().getType() == Material.NETHER_STAR && event.getItem()
 						.getItemMeta().getDisplayName().equals(ChatColor.GOLD.toString() + ChatColor.BOLD + "MENU")) {
@@ -36,7 +37,8 @@ public class MenuManager implements Listener {
 				loresList.add("Cliquez sur l'étoile du nether pour ouvrir votre menu de joueur.");
 
 				if (event.getItem().getItemMeta().getLore().equals(loresList)) {
-					GuiManager.toOpen(event.getPlayer(), InventoryList.inventoryPlayerMenu.getInventory());
+			 GuiManager.toOpen(event.getPlayer(), PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenu));
+			 player.sendMessage(PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenu).toString());
 				}
 
 			} catch (NullPointerException e) {
@@ -96,33 +98,34 @@ public class MenuManager implements Listener {
 		switch (material) {
 		
 		case SKULL_ITEM:
-			GuiManager.toOpen(player, InventoryList.inventoryProfile.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryProfile));
 			break;
 			
 		case EXP_BOTTLE:
-			GuiManager.toOpen(player, InventoryList.inventoryStats.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryStats));
 			break;
 			
 		case BREWING_STAND_ITEM:
-			GuiManager.toOpen(player, InventoryList.inventoryJobs.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryJobs));
 			break;
 			
 		case BOOK_AND_QUILL:
-			GuiManager.toOpen(player, InventoryList.inventoryQuests.getInventory());
+					GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryQuests));
 			break;
 			
 		case EMPTY_MAP:
 			break;
 			
 		case REDSTONE_COMPARATOR:
-			GuiManager.toOpen(player, InventoryList.inventorySettings.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventorySettings));
 			break;
 			
 		case COMMAND:
-			GuiManager.toOpen(player, InventoryList.inventoryPlayerMenuDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenuDevMod));
 			break;
+			
 		}
-		
+	
 	}
 	
 	public static void onMenuDevItem(Material material, Player player) {
@@ -130,40 +133,39 @@ public class MenuManager implements Listener {
 		switch (material) {
 		
 		case SKULL_ITEM:
-			GuiManager.toOpen(player, InventoryList.inventoryProfileDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryProfileDevMod));
 			break;
 			
 		case EXP_BOTTLE:
-			GuiManager.toOpen(player, InventoryList.inventoryStatsDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryStatsDevMod));
 			break;
 			
 		case BREWING_STAND_ITEM:
-			GuiManager.toOpen(player, InventoryList.inventoryJobsDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryJobsDevMod));
 			break;
 			
 		case BOOK_AND_QUILL:
-			GuiManager.toOpen(player, InventoryList.inventoryQuestsDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryQuestsDevMod));
 			break;
 			
 		case EMPTY_MAP:
 			break;
 			
 		case REDSTONE_COMPARATOR:
-			GuiManager.toOpen(player, InventoryList.inventorySettingsDevMod.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventorySettingsDevMod));
 			break;
 
 		case GRASS:
-			GuiManager.toOpen(player, InventoryList.inventoryPlayerMenu.getInventory());
+				GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenu));
 			break;
 		}
+		
 	}
 	
 	// INVENTORY CREATOR	
 
-	public static void initializePlayerMenuItems(Player player) {
-
-		Inventory inventory = InventoryList.inventoryPlayerMenu.getInventory();
-		
+	public static void initializePlayerMenuItems(Player player, Inventory inventory) {
+	
 		inventory.setItem(4, GuiItem.createHeadItem(Material.SKULL_ITEM, player, ChatColor.GREEN + "Profile",
 				ChatColor.BLUE.toString() + "note: mettre les dégats (et ce pour tout)",
 				ChatColor.BLUE.toString() +"et non les stats pure, degats sur un monstre de meme niv que le joueur ",
@@ -197,10 +199,9 @@ public class MenuManager implements Listener {
 		if (player.isOp()) {
 			inventory.setItem(30, GuiItem.createGuiItem(Material.COMMAND, ChatColor.GOLD + "DevMod", ""));
 		}
+		
 	}	
-	public static void initializePlayerMenuDevItems(Player player) {
-
-			Inventory inventory = InventoryList.inventoryPlayerMenuDevMod.getInventory();
+	public static void initializePlayerMenuDevItems(Player player, Inventory inventory) {
 			
 			inventory.setItem(4, GuiItem.createHeadItem(Material.SKULL_ITEM, player, ChatColor.GREEN + "Profile",
 					ChatColor.BLUE.toString() + "note: mettre les dégats (et ce pour tout)",
@@ -232,78 +233,59 @@ public class MenuManager implements Listener {
 			
 			if (player.isOp()) {
 				inventory.setItem(30, GuiItem.createGuiItem(Material.GRASS, ChatColor.GREEN + "NormalMod", ""));
-		}			
+		}		
 	}
 	
-	public static void initializeProfileMenuItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryProfile.getInventory();
-		
+	public static void initializeProfileMenuItems(Player player, Inventory inventory) {
+				
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 		
 	}
 	
-	public static void initializeProfileMenuDevItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryProfileDevMod.getInventory();
-		
+	public static void initializeProfileMenuDevItems(Player player, Inventory inventory) {
+			
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}	
 	
-	public static void initializeStatsMenuItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryStats.getInventory();
-		
+	public static void initializeStatsMenuItems(Player player, Inventory inventory) {
+			
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}
 	
-	public static void initializeStatsMenuDevItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryStatsDevMod.getInventory();
-		
+	public static void initializeStatsMenuDevItems(Player player, Inventory inventory) {
+			
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}	
 	
-	public static void initializeJobsMenuItems(Player player) {
-	
-		Inventory inventory = InventoryList.inventoryJobs.getInventory();
-		
+	public static void initializeJobsMenuItems(Player player, Inventory inventory) {
+
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}
 	
-	public static void initializeJobsMenuDevItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryJobsDevMod.getInventory();
-		
+	public static void initializeJobsMenuDevItems(Player player, Inventory inventory) {
+
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}	
 		
-	public static void initializeQuestsMenuItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryQuests.getInventory();
-		
+	public static void initializeQuestsMenuItems(Player player, Inventory inventory) {
+
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}
 	
-	public static void initializeQuestsMenuDevItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventoryQuestsDevMod.getInventory();
+	public static void initializeQuestsMenuDevItems(Player player, Inventory inventory) {
 		
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}		
 	
-	public static void initializeSettingsMenuItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventorySettings.getInventory();
-		
+	public static void initializeSettingsMenuItems(Player player, Inventory inventory) {
+
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}
 	
-	public static void initializeSettingsMenuDevItems(Player player) {
-		
-		Inventory inventory = InventoryList.inventorySettingsDevMod.getInventory();		
-		
+	public static void initializeSettingsMenuDevItems(Player player, Inventory inventory) {
+
 		inventory.setItem(49, GuiItem.createGuiItem(Material.BARRIER, ChatColor.DARK_RED + "Quitter", ""));
 	}	
+	
 	
 }

@@ -1,6 +1,7 @@
 package fr.hyu.olympplayers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -10,11 +11,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import fr.hyu.olympplayers.gui.GuiManager;
+
 public class JoinAndLeave implements Listener {
 
+	public static HashMap<Player, List<Inventory>> inventoryListPlayer = new HashMap<Player, List<Inventory>>();
+	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		
@@ -34,7 +40,7 @@ public class JoinAndLeave implements Listener {
 		player.getInventory().setItem(8, item);
 		
 		//METTRE TOUT LES INIT ICI POUR PERFS
-		
+
 	}
 	
 	@EventHandler

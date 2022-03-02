@@ -2,14 +2,20 @@ package fr.hyu.olympperms.players;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import fr.hyu.olymp.Main;
 import fr.hyu.olympperms.players.PlayerRankProfile.Rank;
+import fr.hyu.olympplayers.gui.GuiManager;
+import fr.hyu.olympplayers.gui.GuiManager.InventoryTypeList;
 
 
 public class PlayerProfile {
@@ -30,16 +36,23 @@ public class PlayerProfile {
 	private int intelligenceNative;
 	private int manaOnLeave;
 	private int manaCapacityNative;
+	private List<Inventory> inventoryArrayList;
+	private HashMap<InventoryTypeList, Inventory> inventoryHashMapTypeListInv;
+		
+
 
 	// private UUID faction;
 
 	public PlayerProfile(Player player) {
 
 		this.uuid = player.getUniqueId();
-		init();
+		initFile();
+		
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		this.rank = Rank.valueOf(config.getString("rank").toUpperCase());
+		this.inventoryArrayList = initInventories(player);
+		this.inventoryHashMapTypeListInv = initHashMap();
 		this.level = config.getInt("level.level");
 		this.experiencesPoints = config.getInt("level.experiencsPoints");
 		this.gold = config.getInt("gold");
@@ -52,10 +65,35 @@ public class PlayerProfile {
 		this.intelligenceNative = config.getInt("stats.intelligenceNative");
 		this.manaOnLeave = config.getInt("stats.manaOnLeave");
 		this.manaCapacityNative = config.getInt("stats.manaCapacityNative");
+		
+			
+	}
+	
+	public HashMap<InventoryTypeList, Inventory> initHashMap() {
+	
+		HashMap<InventoryTypeList, Inventory> hashMapInv = new HashMap<InventoryTypeList, Inventory>();
+		
+		for (int i = 0; i < inventoryArrayList.size() ; i++) {
+			Inventory inv = inventoryArrayList.get(i);
+			hashMapInv.put(GuiManager.getInventoryType(inv), inv);
 
+		}
+		
+		return hashMapInv;
 	}
 
-	private void init() {
+	private List<Inventory> initInventories(Player player) {
+		
+		List<Inventory> inventoryArrayList = new ArrayList<Inventory>();
+		
+		for (InventoryTypeList inventory : InventoryTypeList.values()) {
+		inventoryArrayList.add(inventory.createInventory(player));
+		}
+		
+		return inventoryArrayList;
+	}
+	
+	private void initFile() {
 
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		if (!file.exists()) {
@@ -114,6 +152,23 @@ public class PlayerProfile {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<Inventory> getInventories() {		
+		return inventoryArrayList;
+	}
+	
+	public void setInventories(Inventory inventory) {
+		
+		List<Inventory> inventoryArrayList = this.inventoryArrayList;
+				
+		inventoryArrayList.add(inventory);
+		
+		this.inventoryArrayList = inventoryArrayList;
+	}
+	
+	public HashMap<InventoryTypeList, Inventory> getHashMapInventoryTypeToInventory() {
+		return inventoryHashMapTypeListInv;
 	}
 
 	public int getLevel() {
@@ -410,5 +465,7 @@ public class PlayerProfile {
 		public String getStat( ) {
 			return name;
 		}	
-	 }			
+	 }	
+	
+
 }

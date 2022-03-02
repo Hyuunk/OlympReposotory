@@ -13,11 +13,8 @@ import org.bukkit.inventory.Inventory;
 
 import com.google.common.collect.Lists;
 
-import fr.hyu.olymp.OlympCommands.OlympCommandsName;
-import fr.hyu.olympperms.players.PlayerRankProfile;
-import fr.hyu.olympperms.players.PlayerProfile.Stat;
+import fr.hyu.olympperms.players.PlayerProfileManager;
 import fr.hyu.olympplayers.gui.GuiManager;
-import fr.hyu.olympplayers.gui.GuiManager.InventoryList;
 
 public class InventoryCommands implements CommandExecutor, TabCompleter {
 
@@ -32,16 +29,30 @@ public class InventoryCommands implements CommandExecutor, TabCompleter {
 				switch (args[0].toString().toUpperCase()) {
 				case "MISSINGINIT":
 
-					GuiManager.toOpen(player, InventoryList.inventoryNot.getInventory());
+			//		GuiManager.toOpen(player, InventoryTypeList.inventoryNot.getInventory());
 					break;
 
 				case "INVENTORYNOTFOUND":
 
 					Inventory inv = Bukkit.createInventory(null, 9, "title");
-					;
+					
 					GuiManager.toOpen(player, inv);
 					break;
 
+				case "INVENTORYHOLDER": 
+					player.sendMessage(player.getInventory().getHolder().toString());
+					
+				case "OH": 
+					player.sendMessage(PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().toString());
+					
+				case "GOTINVNAME":
+					
+					player.sendMessage(GuiManager.getListNameInventory(player).toString());
+					
+				case "NEWINV":
+					
+					PlayerProfileManager.profiles.get(player).setInventories(Bukkit.createInventory(player, 9, "prout"));
+					
 				default:
 					break;
 				}
@@ -75,8 +86,12 @@ public class InventoryCommands implements CommandExecutor, TabCompleter {
 	
 	public enum InventoryCommandsName{
 		
-		MISSINGINIT("missinginit"),
-		INVENTORYNOTFOUND("inventorynotfound");
+		MISSINGINIT("missingInit"),
+		INVENTORYNOTFOUND("inventoryNotFound"),
+		INVENTORYHOLDER("inventoryHolder"),
+		OH("oh"),
+		GOTINVNAME("gotInvName"),
+		NEWINV("newInv");
 		
 		private String name;		
 		

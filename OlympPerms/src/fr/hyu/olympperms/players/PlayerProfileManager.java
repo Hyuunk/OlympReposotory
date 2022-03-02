@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import fr.hyu.olympperms.Main;
 
@@ -23,5 +24,14 @@ public class PlayerProfileManager implements Listener{
 		profiles.put(player, getProfile);
 		player.addAttachment(Main.INSTANCE, "olymp.basics", false);
 		player.recalculatePermissions();
+		
 		}
+	
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event) {
+		
+		Player player = event.getPlayer();
+		profiles.remove(player);
+		
+	}
 }	
