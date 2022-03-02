@@ -27,7 +27,6 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] args) {
-
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 

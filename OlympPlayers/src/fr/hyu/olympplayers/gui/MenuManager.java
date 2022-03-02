@@ -38,7 +38,6 @@ public class MenuManager implements Listener {
 
 				if (event.getItem().getItemMeta().getLore().equals(loresList)) {
 			 GuiManager.toOpen(event.getPlayer(), PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenu));
-			 player.sendMessage(PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryPlayerMenu).toString());
 				}
 
 			} catch (NullPointerException e) {
