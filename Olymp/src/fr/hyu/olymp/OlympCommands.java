@@ -108,7 +108,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 										}
 									} else {
 										player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
-												+ "Argument's Error. Try /olymp setstat" + ChatColor.RED
+												+ "Invalid Player. Try /olymp setstat" + ChatColor.RED
 												+ " [<targetPlayer>]" + ChatColor.GRAY + " <stat> <number>.");
 										break;
 									}
@@ -177,20 +177,16 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 					
 					break;
 				case "GMS":
-					player.setGameMode(GameMode.SURVIVAL);
-					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode survie");
+					setGameMode(GameMode.SURVIVAL, args, player);
 					break;
 				case "GMC":
-					player.setGameMode(GameMode.CREATIVE);
-					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode créatif");
+					setGameMode(GameMode.CREATIVE, args, player);
 					break;
 				case "GMA":
-					player.setGameMode(GameMode.ADVENTURE);
-					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode aventure");
+					setGameMode(GameMode.ADVENTURE, args, player);
 					break;
 				case "GMSP":
-					player.setGameMode(GameMode.SPECTATOR);
-					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode spectateur");
+					setGameMode(GameMode.SPECTATOR, args, player);
 					break;
 			
 
@@ -308,5 +304,47 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 			return name;
 		}
 	}
+	public void setGameMode(GameMode gamemode, String[] args, Player player) {
+		
+		
+		if (args.length == 0) {
+			
+			player.setGameMode(gamemode);
+			player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode " + ChatColor.GREEN + gamemode.name().toLowerCase() + ChatColor.GRAY + ".");
+			
+		} else if (args.length == 1) {
+			
+			Player targetPlayer = Bukkit.getPlayer(args[0]);
+			
+			if (targetPlayer != null) {
+				
+				if (targetPlayer == player) {
+					
+					player.setGameMode(gamemode);
+					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode " + ChatColor.GREEN + gamemode.name().toLowerCase() + ChatColor.GRAY + ".");
+					
+				} else {
+					
+					targetPlayer.setGameMode(gamemode);
+					player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Tu viens de passer en mode " + ChatColor.GREEN + gamemode.name().toLowerCase() + " " + ChatColor.GRAY + targetPlayer.getName() + ".");
+					targetPlayer.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Ton gamemode a été changé en " + ChatColor.GREEN + gamemode.name().toLowerCase() + ChatColor.GRAY + ".");
+				}
+				
+			} else {
+				
+				player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
+						+ "Invalid Player. Try /gm(a,c,s,sp)" + ChatColor.RED
+						+ " [<targetPlayer>]" + ChatColor.GRAY + ".");
+			}
+			
+		} else {
+			
+		player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
+				+ "Argument's Error. Try /gm(a,c,s,sp) [<targetPlayer>].");
+	}
+	
+	}
 }
+
+	
 	
