@@ -25,6 +25,10 @@ public class Main extends JavaPlugin {
 		getCommand("chatcolor").setExecutor(new ChatColorCommand());
 		getCommand("setwarp").setExecutor(new WarpsCommands());
 		getCommand("warp").setExecutor(new WarpsCommands());
+		getCommand("gms").setExecutor(new OlympCommands());
+		getCommand("gmc").setExecutor(new OlympCommands());
+		getCommand("gma").setExecutor(new OlympCommands());
+		getCommand("gmsp").setExecutor(new OlympCommands());
 		
 		//TabCompleters
 		getCommand("olymp").setTabCompleter(new OlympCommands());
