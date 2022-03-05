@@ -31,11 +31,14 @@ public class PlayerProfile {
 	private int vitalityNative;
 	private int defenceNative;
 	private int strengthNative;
+	private int dexterityNative;
 	private int enduranceOnLeave;
-	private int enduranceNative;
+	private int enduranceCapacityNative;
 	private int intelligenceNative;
+	private int faithNative;
 	private int manaOnLeave;
 	private int manaCapacityNative;
+	private int agilityNative;
 	private List<Inventory> inventoryArrayList;
 	private HashMap<InventoryTypeList, Inventory> inventoryHashMapTypeListInv;
 		
@@ -46,8 +49,7 @@ public class PlayerProfile {
 	public PlayerProfile(Player player) {
 
 		this.uuid = player.getUniqueId();
-		initFile();
-		
+		initFile();		
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		this.rank = Rank.valueOf(config.getString("rank").toUpperCase());
@@ -60,11 +62,14 @@ public class PlayerProfile {
 		this.vitalityNative = config.getInt("stats.vitalityNative");
 		this.defenceNative = config.getInt("stats.defenceNative");
 		this.strengthNative = config.getInt("stats.strengthNative");
+		this.dexterityNative = config.getInt("stats.dexterityNative");
 		this.enduranceOnLeave = config.getInt("stats.enduranceOnLeave");
-		this.enduranceNative = config.getInt("stats.enduranceNative");
+		this.enduranceCapacityNative = config.getInt("stats.enduranceNative");
 		this.intelligenceNative = config.getInt("stats.intelligenceNative");
+		this.faithNative = config.getInt("stats.faithNative");
 		this.manaOnLeave = config.getInt("stats.manaOnLeave");
 		this.manaCapacityNative = config.getInt("stats.manaCapacityNative");
+		this.agilityNative = config.getInt("stats.agilityNative");
 		
 			
 	}
@@ -106,11 +111,14 @@ public class PlayerProfile {
 			config.set("stats.vitalityNative", 0);
 			config.set("stats.defenceNative", 0);
 			config.set("stats.strengthNative", 0);
+			config.set("stats.dexterityNative", 0);
 			config.set("stats.enduranceOnLeave", 100);
 			config.set("stats.enduranceNative", 100);
 			config.set("stats.intelligenceNative", 0);
+			config.set("stats.faithNative", 0);
 			config.set("stats.manaOnLeave", 100);
 			config.set("stats.manaCapacityNative", 100);
+			config.set("stats.agilityNative", 0);
 
 			try {
 				config.save(file);
@@ -289,6 +297,22 @@ public class PlayerProfile {
 			e.printStackTrace();
 		}
 	}
+	
+	public int getDexterityNative() {
+		return dexterityNative;
+	}
+	
+	public void setDexterityNative(int dexterityNative) {
+		this.dexterityNative = dexterityNative;
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("stats.dexterityNative", dexterityNative);
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int getEnduranceOnLeave() {
 		return enduranceOnLeave;
@@ -307,11 +331,11 @@ public class PlayerProfile {
 	}
 
 	public int getEnduranceNative() {
-		return enduranceNative;
+		return enduranceCapacityNative;
 	}
 
 	public void setEnduranceNative(int enduranceNative) {
-		this.enduranceNative = enduranceNative;
+		this.enduranceCapacityNative = enduranceNative;
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.enduranceNative", enduranceNative);
@@ -331,6 +355,22 @@ public class PlayerProfile {
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("stats.intelligenceNative", intelligenceNative);
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int getFaithNative() {
+		return faithNative;
+	}
+	
+	public void setFaithNative(int faithNative) {
+		this.faithNative = faithNative;
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("stats.faithNative", faithNative);
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -369,10 +409,26 @@ public class PlayerProfile {
 			e.printStackTrace();
 		}
 	}
+	
+	public int getAgilityNative() {
+		return agilityNative;
+	}
 
-	public int getStat(Player player, String stat) {
+	public void setAgilityNative(int agilityNative) {
+		this.agilityNative = agilityNative;
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("stats.agilityNative", agilityNative);
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static int getStat(Player player, Stat stat) {
 
-		switch (stat.toUpperCase()) {
+		switch (stat.getName().toUpperCase()) {
 		case "LEVEL":
 			return PlayerProfileManager.profiles.get(player).getLevel();
 		case "EXPERIENCEPOINTS":
@@ -387,57 +443,63 @@ public class PlayerProfile {
 			return PlayerProfileManager.profiles.get(player).getDefenceNative();
 		case "STRENGTHNATIVE":
 			return PlayerProfileManager.profiles.get(player).getStrengthNative();
+		case "DEXTIRITYNATIVE":
+			return PlayerProfileManager.profiles.get(player).getDexterityNative();
 		case "ENDURANCENATIVE":
 			return PlayerProfileManager.profiles.get(player).getEnduranceNative();
 		case "INTELLIGENCENATIVE":
 			return PlayerProfileManager.profiles.get(player).getIntelligenceNative();
+		case "FAITHNATIVE":
+			return PlayerProfileManager.profiles.get(player).getFaithNative();
 		case "MANAONLEAVE":
 			return PlayerProfileManager.profiles.get(player).getManaOnLeave();
 		case "MANACAPACITYNATIVE":
 			return PlayerProfileManager.profiles.get(player).getManaCapacityNative();
-
+		case "AGILITYNATIVE":
+			return PlayerProfileManager.profiles.get(player).getAgilityNative();
+		default:
+			System.out.println("[OLYMPPERMS] getStat not defined");
+			break;
 		}
-		return -123456789;
+		
+		return -0;
 	}
 
-	public boolean setStat(Player player, String stat, int toSet) {
+	public static void setStat(Player player, Stat stat, int toSet) {
 
-		switch (stat.toUpperCase()) {
+		switch (stat.getName().toUpperCase()) {
 		case "LEVEL":
-			PlayerProfileManager.profiles.get(player).setLevel(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setLevel(toSet); break;
 		case "EXPERIENCEPOINTS":
-			PlayerProfileManager.profiles.get(player).setExperiencesPoints(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setExperiencesPoints(toSet); break;
 		case "GOLD":
-			PlayerProfileManager.profiles.get(player).setGold(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setGold(toSet); break;
 		case "KARMA":
-			PlayerProfileManager.profiles.get(player).setKarma(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setKarma(toSet); break;
 		case "VITALITYNATIVE":
-			PlayerProfileManager.profiles.get(player).setVitalityNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setVitalityNative(toSet); break;
 		case "DEFENCENATIVE":
-			PlayerProfileManager.profiles.get(player).setDefenceNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setDefenceNative(toSet); break;
 		case "STRENGTHNATIVE":
-			PlayerProfileManager.profiles.get(player).setStrengthNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setStrengthNative(toSet); break;
+		case "DEXTIRITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setDexterityNative(toSet); break;
 		case "ENDURANCENATIVE":
-			PlayerProfileManager.profiles.get(player).setEnduranceNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setEnduranceNative(toSet); break;
 		case "INTELLIGENCENATIVE":
-			PlayerProfileManager.profiles.get(player).setIntelligenceNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setIntelligenceNative(toSet); break;
+		case "FAITHNATIVE":
+			PlayerProfileManager.profiles.get(player).setFaithNative(toSet); break;
 		case "MANAONLEAVE":
-			PlayerProfileManager.profiles.get(player).setManaOnLeave(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setManaOnLeave(toSet); break;
 		case "MANACAPACITYNATIVE":
-			PlayerProfileManager.profiles.get(player).setManaCapacityNative(toSet);
-			return true;
+			PlayerProfileManager.profiles.get(player).setManaCapacityNative(toSet); break;
+		case "AGILITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setAgilityNative(toSet); break;
+		default:
+			System.out.println("[OLYMPPERMS] setStat not defined");
+			break;
 		}
-		return false;
 
 	}
 	
@@ -451,10 +513,13 @@ public class PlayerProfile {
 		VITALITYNATIVE("vitalityNative"),
 		DEFENCENATIVE("defenceNative"),
 		STRENGTHNATIVE("strengthNative"),
+		DEXTIRITYNATIVE("dextirityNative"),
 		ENDURENCENATIVE("enduranceNative"),
 		INTELLIGENCENATIVE("intelligenceNative"),
+		FAITHNATIVE("faithNative"),
 		MANAONLEAVE("manaOnLeave"),
-		MANACAPACITYNATIVE("manaCapacityNative");
+		MANACAPACITYNATIVE("manaCapacityNative"),
+		AGILITYNATIVE("agilityNative");
 
 		private String name;		
 		
@@ -462,10 +527,22 @@ public class PlayerProfile {
 		 this.name = name;
 		}	
 
-		public String getStat( ) {
+		public String getName( ) {
 			return name;
 		}	
+		
+		
 	 }	
+	
+	public static boolean isStat(String statToVerify) {
+		for (Stat stat : Stat.values()) {	
+			
+			if (stat.toString().equalsIgnoreCase(statToVerify)) {			
+			return true;		
+			}
+		}
+		return false;		
+	}
 	
 
 }

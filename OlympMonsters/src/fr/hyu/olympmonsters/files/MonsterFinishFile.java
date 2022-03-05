@@ -29,9 +29,9 @@ public static boolean monsterFinish(File file, String monster) {
 			
 			//stat
 			for (Stat stat : Stat.values()) {
-				if (stat.getStat() != "experiencePoints" | stat.getStat() != "gold" | stat.getStat() != "karma") {
-					if (config.getInt("stats." + stat.getStat()) != 0) {
-						newConfig.set("stats." + stat.getStat(), config.getInt("stats." + stat.getStat()));						
+				if (stat.getName() != "experiencePoints" | stat.getName() != "gold" | stat.getName() != "karma") {
+					if (config.getInt("stats." + stat.getName()) != 0) {
+						newConfig.set("stats." + stat.getName(), config.getInt("stats." + stat.getName()));						
 					}
 				}
 			}

@@ -1,10 +1,9 @@
 package fr.hyu.olymp;
 
-import java.util.ArrayList;
+import java.lang.Character.UnicodeBlock;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -17,6 +16,7 @@ import org.bukkit.entity.Player;
 import com.google.common.collect.Lists;
 
 import fr.hyu.olymp.chat.ChatManager;
+import fr.hyu.olympperms.players.PlayerProfile;
 import fr.hyu.olympperms.players.PlayerProfile.Stat;
 import fr.hyu.olympperms.players.PlayerProfileManager;
 import fr.hyu.olympperms.players.PlayerRankProfile;
@@ -41,6 +41,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 						//ARGS[0] CHECK
 						switch (args[0].toUpperCase()) {
 						
+						
 						case "HELP":
 							String newLine = System.getProperty("line.separator");
 							player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + ChatColor.GRAY.toString() + "Voici la liste des commandes " + ChatColor.GOLD + ChatColor.BOLD + "Olymp" + ChatColor.GRAY + " :"
@@ -53,20 +54,26 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 							String message = ChatColor.GOLD + "Endurance " + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getEnduranceNative() + "          " + ChatColor.AQUA + "Mana " + PlayerProfileManager.profiles.get(targetPlayer).getManaOnLeave() + "/" + PlayerProfileManager.profiles.get(targetPlayer).getManaCapacityNative();
 							targetPlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 							break;
+						case "UNICODE":
+							UnicodeBlock a = UnicodeBlock.forName(args[1]);
+							System.out.println(a);
+							break;
 
 						case "SETSTAT":
 							
 							if (args.length == 3 | args.length == 4) {
 								if (args.length == 3) {
 									if (isNumeric(args[2].toString())) {
-										if (PlayerProfileManager.profiles.get(player).setStat(player, args[1],
-												Integer.valueOf(args[2]))) {
+										if (PlayerProfile.isStat(args[1])) {
+										PlayerProfile.setStat(player, Stat.valueOf(args[1].toUpperCase()),
+												Integer.valueOf(args[2])); 
 											player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage()
 													+ args[0].toLowerCase() + " " + player.getName() + " "
 													+ args[1].toUpperCase() + " to "
-													+ PlayerProfileManager.profiles.get(player).getStat(player, args[1]));
+													+ PlayerProfile.getStat(player, Stat.valueOf(args[1].toUpperCase())));
 
-											break;
+											break;									
+										
 										} else {
 											player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 													+ "Argument's Error. Try /olymp setstat [<targetPlayer>] "
@@ -76,23 +83,23 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 									} else {
 										player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 												+ "Argument's Error. Try /olymp setstat [<targetPlayer>] <stat>"
-												+ ChatColor.RED + " <number>.");
+												+ ChatColor.RED + " <number>" + ChatColor.GRAY + ".");
 										break;
 									}
 								} else {
 									Player targetPlayerSetStat = Bukkit.getPlayer(args[1]);
 									if (targetPlayerSetStat != null) {
 										if (isNumeric(args[3])) {
-											if (PlayerProfileManager.profiles.get(player).setStat(targetPlayerSetStat,
-													args[2], Integer.valueOf(args[3]))) {
+											if (PlayerProfile.isStat(args[2])) {
+											PlayerProfile.setStat(targetPlayerSetStat,
+													Stat.valueOf(args[2].toUpperCase()), Integer.valueOf(args[3].toUpperCase()));
 
 												player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage()
 														+ args[0].toLowerCase() + " " + targetPlayerSetStat.getName() + " "
 														+ args[2].toUpperCase() + " to "
-														+ PlayerProfileManager.profiles.get(targetPlayerSetStat)
-																.getStat(targetPlayerSetStat, args[2]));
+														+ PlayerProfile.getStat(targetPlayerSetStat, Stat.valueOf(args[2].toUpperCase())));
 												break;
-
+											
 											} else {
 												player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 														+ "Argument's Error. Try /olymp setstat [<targetPlayer>]"
@@ -117,17 +124,23 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 										+ "Argument's Error. Try /olymp setstat [<targetPlayer>] <stat> <number>.");
 								break;
 
-							}
+							} 
+							
+						
 
 						case "GETSTAT":
 
 							if (args.length == 2 | args.length == 3) {
 								if (args.length == 2) {
-									if (PlayerProfileManager.profiles.get(player).getStat(player, args[1]) != -123456789) {
+									if (PlayerProfile.isStat(args[1])) {
+									if (PlayerProfile.getStat(player, Stat.valueOf(args[1].toUpperCase())) != -0) {
 										player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage()
 												+ args[0].toLowerCase() + " " + player.getName() + " "
 												+ args[1].toUpperCase() + " is "
-												+ PlayerProfileManager.profiles.get(player).getStat(player, args[1]));
+												+ PlayerProfile.getStat(player, Stat.valueOf(args[1].toUpperCase())));
+										break;
+									}
+									
 									} else {
 										player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 												+ "Argument's Error. Try /olymp getstat [<targetPlayer>]" + ChatColor.RED
@@ -137,14 +150,15 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 								} else {
 									Player targetPlayerGetStat = Bukkit.getPlayer(args[1]);
 									if (targetPlayerGetStat != null) {
-										if (PlayerProfileManager.profiles.get(targetPlayerGetStat).getStat(player,
-												args[2]) != -123456789) {
+										if (PlayerProfile.isStat(args[2])) {
+										if (PlayerProfile.getStat(player,
+												Stat.valueOf(args[2].toUpperCase())) != -0) {
 											player.sendMessage(ChatManager.MessageType.OLYMPRIGHT.getMessage()
 													+ args[0].toLowerCase() + " " + targetPlayerGetStat.getName() + " "
 													+ args[2].toUpperCase() + " is "
-													+ PlayerProfileManager.profiles.get(targetPlayerGetStat)
-															.getStat(targetPlayerGetStat, args[2]));
+													+ PlayerProfile.getStat(targetPlayerGetStat, Stat.valueOf(args[2].toUpperCase())));
 											break;
+										}
 										} else {
 											player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 													+ "Argument's Error. Try /olymp getstat [<targetPlayer>]"
@@ -163,18 +177,23 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 								player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage()
 										+ "Argument's Error. Try /olymp getstat [<targetPlayer>] <stat>.");
 								break;
-							}	
+							}
+							
+							break; 
+							
 						default:
 							
 							player.sendMessage(ChatManager.MessageType.OLYMPERROR.getMessage() + "Not valid argument. Try /olymp help");
 							break;
 						
+							
 						}	
 					} else {
 						player.sendMessage(ChatManager.MessageType.OLYMPCLASSIC.getMessage() + "Add an argument. Try /olymp help.");
 					}
 					
 					break;
+					
 				case "GMS":
 					setGameMode(GameMode.SURVIVAL, args, player);
 					break;
@@ -251,8 +270,8 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 					} else if (args.length == 3) {
 						
 						for (Stat stat : Stat.values()) 
-							if (stat.getStat().toLowerCase().startsWith(args[2]))
-								fList.add(stat.getStat());
+							if (stat.getName().toLowerCase().startsWith(args[2]))
+								fList.add(stat.getName());
 						return fList;
 						
 					} else if (args.length == 4) {
@@ -271,8 +290,8 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 					} else if (args.length == 3) {
 						
 						for (Stat stat : Stat.values()) 
-							if (stat.getStat().toLowerCase().startsWith(args[2]))
-								fList.add(stat.getStat());
+							if (stat.getName().toLowerCase().startsWith(args[2]))
+								fList.add(stat.getName());
 						return fList;
 						
 					} return noArgument;
@@ -290,6 +309,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 		
 		HELP("help"),
 		TEST("test"),
+		UNICODE("unicode"),
 		GETSTAT("getstat"),
 		SETSTAT("setstat");
 		

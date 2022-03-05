@@ -10,6 +10,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
@@ -26,7 +28,8 @@ public class GuiManager implements Listener {
 		
 		ItemStack clickedItem = event.getCurrentItem();
 		Player player = (Player) event.getWhoClicked();
-		
+		InventoryAction act = event.getAction();
+		player.sendMessage(act.name());
 		if (PlayerProfileManager.profiles.get(player).getInventories().contains(event.getInventory())) {			
 			event.setCancelled(true);
 			
@@ -43,21 +46,61 @@ public class GuiManager implements Listener {
 					
 				} else {		
 					
-				switch (event.getInventory().getName()) {
+				switch (getInventoryType(event.getInventory())) {
 				
-					case "Player Menu":
+				case inventoryPlayerMenu:
 					
-						MenuManager.onMenuItem(materialItem, player);
+					MenuManager.onMenuItem(materialItem, player);
+					break;
 						
-						player.sendMessage("player menu");
-						break;
+				case inventoryPlayerMenuDevMod:
 						
-					case "Player Menu (devmod)":
+					MenuManager.onMenuDevItem(materialItem, player);
+					break;
 						
-						MenuManager.onMenuDevItem(materialItem, player);
-						
-						player.sendMessage("player menu (devmod)");
-						break;
+				case inventoryJobs:
+					MenuManager.onJobsItem(materialItem, player);
+					break;
+					
+				case inventoryJobsDevMod:
+					MenuManager.onJobsDevItem(materialItem, player);
+					break;
+					
+				case inventoryProfile:
+					MenuManager.onProfileItem(materialItem, player);
+					break;
+					
+				case inventoryProfileDevMod:
+					MenuManager.onProfileDevItem(materialItem, player);
+					break;
+					
+				case inventoryQuests:
+					MenuManager.onQuestsItem(materialItem, player);
+					break;
+					
+				case inventoryQuestsDevMod:
+					MenuManager.onQuestsDevItem(materialItem, player);
+					break;
+					
+				case inventorySettings:
+					MenuManager.onSettingsItem(materialItem, player);
+					break;
+					
+				case inventorySettingsDevMod:
+					MenuManager.onSettingsDevItem(materialItem, player);
+					break;
+					
+				case inventoryStats:
+					MenuManager.onMenuStatsItem(materialItem, player);
+					break;
+					
+				case inventoryStatsDevMod:
+					MenuManager.onMenuStatsDevItem(materialItem, player);
+					break;
+					
+				default:
+					System.out.println("[OLYMPPLAYERS] (GuiManager.onInventoryClick) undefined button path");
+					break;
 				}
 						
 			}			
@@ -85,6 +128,51 @@ public class GuiManager implements Listener {
 	public static void closeInventory(HumanEntity entity) {
 		entity.closeInventory();
 	}
+	
+	//Open after menu being opened not same function
+	public static void toOpen(Player player, Inventory inventory) {
+
+		if (isInventoryType(inventory)) {
+									
+		switch (getInventoryType(inventory)) {
+				
+			case inventoryJobs: MenuManager.initializeJobsMenuItems(player, inventory);
+				break;		
+			case inventoryJobsDevMod: MenuManager.initializeJobsMenuDevItems(player, inventory);				
+				break;				
+			case inventoryPlayerMenu: MenuManager.initializePlayerMenuItems(player, inventory);				
+				break;
+			case inventoryPlayerMenuDevMod: MenuManager.initializePlayerMenuDevItems(player, inventory);				
+				break;
+			case inventoryProfile: MenuManager.initializeProfileMenuItems(player, inventory);	 			
+				break;
+			case inventoryProfileDevMod: MenuManager.initializeProfileMenuDevItems(player, inventory);				
+				break;
+			case inventoryQuests: MenuManager.initializeQuestsMenuItems(player, inventory);
+				break;
+			case inventoryQuestsDevMod: MenuManager.initializeQuestsMenuDevItems(player, inventory);
+				break;
+			case inventorySettings: MenuManager.initializeSettingsMenuItems(player, inventory);
+				break;
+			case inventorySettingsDevMod: MenuManager.initializeSettingsMenuDevItems(player, inventory);
+				break;
+			case inventoryStats: MenuManager.initializeStatsMenuItems(player, inventory);
+				break;
+			case inventoryStatsDevMod: MenuManager.initializeStatsMenuDevItems(player, inventory);
+				break;
+				// Error Return
+			default: System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory initialize path not defined");
+				break;
+				
+			}	
+		
+		player.openInventory(inventory);
+		
+		} else {
+			
+			System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventoryType not recognized");
+		}
+	}	
 	
 	public enum InventoryTypeList { //PRIVATE INV
 		
@@ -163,47 +251,4 @@ public class GuiManager implements Listener {
 	}
 	
 	
-	public static void toOpen(Player player, Inventory inventory) {
-
-		if (isInventoryType(inventory)) {
-									
-		switch (getInventoryType(inventory)) {
-				
-			case inventoryJobs: MenuManager.initializeJobsMenuItems(player, inventory);
-				break;		
-			case inventoryJobsDevMod: MenuManager.initializeJobsMenuDevItems(player, inventory);				
-				break;				
-			case inventoryPlayerMenu: MenuManager.initializePlayerMenuItems(player, inventory);				
-				break;
-			case inventoryPlayerMenuDevMod: MenuManager.initializePlayerMenuDevItems(player, inventory);				
-				break;
-			case inventoryProfile: MenuManager.initializeProfileMenuItems(player, inventory);	 			
-				break;
-			case inventoryProfileDevMod: MenuManager.initializeProfileMenuDevItems(player, inventory);				
-				break;
-			case inventoryQuests: MenuManager.initializeQuestsMenuItems(player, inventory);
-				break;
-			case inventoryQuestsDevMod: MenuManager.initializeQuestsMenuDevItems(player, inventory);
-				break;
-			case inventorySettings: MenuManager.initializeSettingsMenuItems(player, inventory);
-				break;
-			case inventorySettingsDevMod: MenuManager.initializeSettingsMenuDevItems(player, inventory);
-				break;
-			case inventoryStats: MenuManager.initializeStatsMenuItems(player, inventory);
-				break;
-			case inventoryStatsDevMod: MenuManager.initializeStatsMenuDevItems(player, inventory);
-				break;
-				// Error Return
-			default: System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventory initialize path not defined");
-				break;
-				
-			}	
-		
-		player.openInventory(inventory);
-		
-		} else {
-			
-			System.out.println("[OLYMPPLAYERS] (GuiManager.initialize) inventoryType not recognized");
-		}
-	}	
 }

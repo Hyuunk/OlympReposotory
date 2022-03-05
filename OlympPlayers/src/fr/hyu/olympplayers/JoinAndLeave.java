@@ -15,8 +15,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import fr.hyu.olympplayers.gui.GuiManager;
-
 public class JoinAndLeave implements Listener {
 
 	public static HashMap<Player, List<Inventory>> inventoryListPlayer = new HashMap<Player, List<Inventory>>();
@@ -30,9 +28,6 @@ public class JoinAndLeave implements Listener {
 		ItemStack item = new ItemStack(Material.NETHER_STAR, 1);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.GOLD.toString() + ChatColor.BOLD + "MENU");
-		item.setItemMeta(meta);
-		player.getInventory().setItem(7, item);
-		
 		List<String> loresList = new ArrayList<String>();
 		loresList.add("Cliquez sur l'étoile du nether pour ouvrir votre menu de joueur.");
 		meta.setLore(loresList);
