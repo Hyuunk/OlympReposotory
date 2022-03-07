@@ -7,12 +7,17 @@ import fr.hyu.olympplayers.gui.MenuManager;
 import fr.hyu.olympplayers.players.InteractPlayerOnMonster;
 import fr.hyu.olympplayers.stats.level.PlayerLevelApplicator;
 import fr.hyu.olympplayers.stats.level.PlayerLevelListener;
-import fr.hyu.olympplayers.stats.strength.PlayerStrengthApplicator;
+import fr.hyu.olympplayers.stats.ondamage.PlayerStrengthApplicator;
 
 
 public class Main extends JavaPlugin {
+	
+	public static Main INSTANCE = null;
+	
 	@Override
 	public void onEnable() {
+		
+		INSTANCE = this;
 		System.out.println("OlympPlayers est activé");
 		
 		getCommand("inventory").setExecutor(new InventoryCommands());

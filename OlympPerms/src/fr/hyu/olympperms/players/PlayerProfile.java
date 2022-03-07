@@ -26,6 +26,7 @@ public class PlayerProfile {
 	private Rank rank;
 	private int level;
 	private int experiencesPoints;
+	private int pointsAvailables;
 	private int gold;
 	private int karma;
 	private int vitalityNative;
@@ -57,6 +58,7 @@ public class PlayerProfile {
 		this.inventoryHashMapTypeListInv = initHashMap();
 		this.level = config.getInt("level.level");
 		this.experiencesPoints = config.getInt("level.experiencsPoints");
+		this.pointsAvailables = config.getInt("level.pointsAvailables");
 		this.gold = config.getInt("gold");
 		this.karma = config.getInt("stats.karmaPoint");
 		this.vitalityNative = config.getInt("stats.vitalityNative");
@@ -106,6 +108,7 @@ public class PlayerProfile {
 			config.set("rank", "default");
 			config.set("level.level", 0);
 			config.set("level.experiencesPoints", 0);
+			config.set("level.pointsAvailables", 0);
 			config.set("gold", 0);
 			config.set("stats.karmaPoint", 0);
 			config.set("stats.vitalityNative", 0);
@@ -204,6 +207,22 @@ public class PlayerProfile {
 		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		config.set("level.experiencesPoints", experiencesPoints);
+		try {
+			config.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int getPointsAvailables() {
+		return pointsAvailables;
+	}
+	
+	public void setPointsAvailables(int pointsAvailables) {
+		this.pointsAvailables = pointsAvailables;
+		File file = new File(Main.INSTANCE.getDataFolder(), "OlympPerms/players/" + uuid + ".yml");
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		config.set("level.pointsAvailables", pointsAvailables);
 		try {
 			config.save(file);
 		} catch (IOException e) {
@@ -433,6 +452,8 @@ public class PlayerProfile {
 			return PlayerProfileManager.profiles.get(player).getLevel();
 		case "EXPERIENCEPOINTS":
 			return PlayerProfileManager.profiles.get(player).getExperiencesPoints();
+		case "POINTSAVAILABLES":
+			return PlayerProfileManager.profiles.get(player).getPointsAvailables();
 		case "GOLD":
 			return PlayerProfileManager.profiles.get(player).getGold();
 		case "KARMA":
@@ -472,6 +493,8 @@ public class PlayerProfile {
 			PlayerProfileManager.profiles.get(player).setLevel(toSet); break;
 		case "EXPERIENCEPOINTS":
 			PlayerProfileManager.profiles.get(player).setExperiencesPoints(toSet); break;
+		case "POINTSAVAILABLES":
+			PlayerProfileManager.profiles.get(player).setPointsAvailables(toSet); break;
 		case "GOLD":
 			PlayerProfileManager.profiles.get(player).setGold(toSet); break;
 		case "KARMA":
@@ -503,11 +526,51 @@ public class PlayerProfile {
 
 	}
 	
+	public static void addStat(Player player, Stat stat, int toAdd) {
 
+		switch (stat.getName().toUpperCase()) {
+		case "LEVEL":
+			PlayerProfileManager.profiles.get(player).setLevel(PlayerProfileManager.profiles.get(player).getLevel() + toAdd); break;
+		case "EXPERIENCEPOINTS":
+			PlayerProfileManager.profiles.get(player).setExperiencesPoints(PlayerProfileManager.profiles.get(player).getExperiencesPoints() + toAdd); break;
+		case "POINTSAVAILABLES":
+			PlayerProfileManager.profiles.get(player).setPointsAvailables(PlayerProfileManager.profiles.get(player).getPointsAvailables() + toAdd); break;
+		case "GOLD":
+			PlayerProfileManager.profiles.get(player).setGold(PlayerProfileManager.profiles.get(player).getGold() + toAdd); break;
+		case "KARMA":
+			PlayerProfileManager.profiles.get(player).setKarma(PlayerProfileManager.profiles.get(player).getKarma() + toAdd); break;
+		case "VITALITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setVitalityNative(PlayerProfileManager.profiles.get(player).getVitalityNative() + toAdd); break;
+		case "DEFENCENATIVE":
+			PlayerProfileManager.profiles.get(player).setDefenceNative(PlayerProfileManager.profiles.get(player).getDefenceNative() + toAdd); break;
+		case "STRENGTHNATIVE":
+			PlayerProfileManager.profiles.get(player).setStrengthNative(PlayerProfileManager.profiles.get(player).getStrengthNative() + toAdd); break;
+		case "DEXTIRITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setDexterityNative(PlayerProfileManager.profiles.get(player).getDexterityNative() + toAdd); break;
+		case "ENDURANCENATIVE":
+			PlayerProfileManager.profiles.get(player).setEnduranceNative(PlayerProfileManager.profiles.get(player).getEnduranceNative() + toAdd); break;
+		case "INTELLIGENCENATIVE":
+			PlayerProfileManager.profiles.get(player).setIntelligenceNative(PlayerProfileManager.profiles.get(player).getIntelligenceNative() + toAdd); break;
+		case "FAITHNATIVE":
+			PlayerProfileManager.profiles.get(player).setFaithNative(PlayerProfileManager.profiles.get(player).getFaithNative() + toAdd); break;
+		case "MANAONLEAVE":
+			PlayerProfileManager.profiles.get(player).setManaOnLeave(PlayerProfileManager.profiles.get(player).getManaOnLeave() + toAdd); break;
+		case "MANACAPACITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setManaCapacityNative(PlayerProfileManager.profiles.get(player).getManaCapacityNative() + toAdd); break;
+		case "AGILITYNATIVE":
+			PlayerProfileManager.profiles.get(player).setAgilityNative(PlayerProfileManager.profiles.get(player).getAgilityNative() + toAdd); break;
+		default:
+			System.out.println("[OLYMPPERMS] setStat not defined");
+			break;
+		}
+
+	}
+	
 	public enum Stat {
 
 		LEVEL("level"),
 		EXPERIENCEPOINTS("experiencePoints"),
+		POINTSAVAILABLES("pointsAvailables"),
 		GOLD("gold"),
 		KARMA("karma"),
 		VITALITYNATIVE("vitalityNative"),

@@ -3,21 +3,27 @@ package fr.hyu.olympplayers.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import fr.hyu.olympplayers.Main;
 import fr.hyu.olympperms.players.PlayerProfile;
 import fr.hyu.olympperms.players.PlayerProfile.Stat;
 import fr.hyu.olympperms.players.PlayerProfileManager;
@@ -97,8 +103,10 @@ public class MenuManager implements Listener {
 	}
 
 		//MENU ITEM FUNCTION
-	public static void onMenuItem(Material material, Player player) {
+	public static void onMenuItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case SKULL_ITEM:
@@ -137,8 +145,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onJobsItem(Material material, Player player) {
+	public static void onJobsItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -148,8 +158,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onProfileItem(Material material, Player player) {
+	public static void onProfileItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -159,8 +171,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onQuestsItem(Material material, Player player) {
+	public static void onQuestsItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -170,8 +184,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onSettingsItem(Material material, Player player) {
+	public static void onSettingsItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -181,19 +197,62 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onMenuStatsItem(Material material, Player player) {
+	public static void onMenuStatsItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
+		case STAINED_CLAY:
+			 
+			switch (itemStack.getDurability()) {
+			
+			case 14:
+				
+				onActionItem(player, Stat.VITALITYNATIVE, action, 19);
+				break;
+				
+			case 5:
+					
+				onActionItem(player, Stat.STRENGTHNATIVE, action, 21);
+				break;
+				
+			case 4:
+				
+				onActionItem(player, Stat.DEXTIRITYNATIVE, action, 23);
+				break;
+				
+			case 0:
+				
+				onActionItem(player, Stat.AGILITYNATIVE, action, 25);
+				break;
+				
+			case 3:
+				
+				onActionItem(player, Stat.INTELLIGENCENATIVE, action, 30);
+				break;
+				
+			case 2:
+				
+				onActionItem(player, Stat.FAITHNATIVE, action, 32);
+				break;
+			
+			}
+			
+			break;
+			
 		case ARROW:
 			GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory()
 					.get(InventoryTypeList.inventoryPlayerMenu));
 			break;
+			
 		}
 	}
 
-	public static void onMenuDevItem(Material material, Player player) {
+	public static void onMenuDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case SKULL_ITEM:
@@ -232,8 +291,10 @@ public class MenuManager implements Listener {
 
 	}
 
-	public static void onJobsDevItem(Material material, Player player) {
+	public static void onJobsDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -243,8 +304,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onProfileDevItem(Material material, Player player) {
+	public static void onProfileDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -254,8 +317,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onQuestsDevItem(Material material, Player player) {
+	public static void onQuestsDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -265,8 +330,10 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onSettingsDevItem(Material material, Player player) {
+	public static void onSettingsDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
 
 		case ARROW:
@@ -276,15 +343,125 @@ public class MenuManager implements Listener {
 		}
 	}
 
-	public static void onMenuStatsDevItem(Material material, Player player) {
+	public static void onMenuStatsDevItem(ItemStack itemStack, Player player, InventoryAction action) {
 
+		Material material = itemStack.getType();
+		
 		switch (material) {
-
+		
+		case STAINED_CLAY:
+					
+			switch (itemStack.getDurability()) {
+			
+			case 14:
+				
+				onActionDevItem(player, Stat.VITALITYNATIVE, action);
+				break;
+				
+			case 5:
+					
+				onActionDevItem(player, Stat.STRENGTHNATIVE, action);
+				break;
+				
+			case 4:
+				
+				onActionDevItem(player, Stat.DEXTIRITYNATIVE, action);
+				break;
+				
+			case 0:
+				
+				onActionDevItem(player, Stat.AGILITYNATIVE, action);
+				break;
+				
+			case 3:
+				
+				onActionDevItem(player, Stat.INTELLIGENCENATIVE, action);
+				break;
+				
+			case 2:
+				
+				onActionDevItem(player, Stat.FAITHNATIVE, action);
+				break;
+			
+			}
+			
+			break;
+			
 		case ARROW:
 			GuiManager.toOpen(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory()
 					.get(InventoryTypeList.inventoryPlayerMenuDevMod));
 			break;
 		}
+	}
+	
+private static void onActionItem(Player player, Stat stat, InventoryAction action, int slot) {	
+			
+		switch (action) {
+		
+		//left click
+		case PICKUP_ALL:		
+			
+			if (PlayerProfile.getStat(player, Stat.POINTSAVAILABLES) > 0) { 
+			PlayerProfile.addStat(player, stat, 1);		
+			PlayerProfile.addStat(player, Stat.POINTSAVAILABLES, -1);
+			
+			} else {		
+				
+				PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryStats).setItem(slot, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "Point insuffisant !"));
+			
+		    }		
+			
+			break;
+			 
+		case PICKUP_HALF:
+			
+			if (PlayerProfile.getStat(player, Stat.POINTSAVAILABLES) > 4) { 
+			PlayerProfile.addStat(player, stat, 5);
+			PlayerProfile.addStat(player, Stat.POINTSAVAILABLES, -5);
+			
+			} else {	
+				
+				PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory().get(InventoryTypeList.inventoryStats).setItem(slot, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "Points insuffisants !"));				
+		    }	
+			
+			break;	
+		}
+		
+		GuiManager.toActualize(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory()
+				.get(InventoryTypeList.inventoryStats));
+		
+	}
+	
+	private static void onActionDevItem(Player player, Stat stat, InventoryAction action) {
+		
+		switch (action) {
+		
+		//left click
+		case PICKUP_ALL:
+			
+			PlayerProfile.addStat(player, stat, 1);		
+			break;
+			
+		//right click
+		case PICKUP_HALF:
+			
+			PlayerProfile.addStat(player, stat, 5);
+			break;
+		
+		//drop
+		case DROP_ONE_SLOT:
+			PlayerProfile.addStat(player, stat, -1);
+			
+			break;
+			
+		//ctrl + drop
+		case DROP_ALL_SLOT:
+			PlayerProfile.addStat(player, stat, -5);
+			break;
+		}
+		
+		GuiManager.toActualize(player, PlayerProfileManager.profiles.get(player).getHashMapInventoryTypeToInventory()
+				.get(InventoryTypeList.inventoryStatsDevMod));
 	}
 
 	// INVENTORY CREATOR
@@ -294,20 +471,19 @@ public class MenuManager implements Listener {
 		inventory.setItem(4, GuiItem.createHeadItem(Material.SKULL_ITEM, player, ChatColor.GREEN + "Profile",
 				ChatColor.BLUE.toString() + "note: mettre les dégats (et ce pour tout)",
 				ChatColor.BLUE.toString() + "et non les stats pure, degats sur un monstre de meme niv que le joueur ",
-				ChatColor.GRAY.toString() + "Rank: " + PlayerProfileManager.profiles.get(player).getRank(),
-				ChatColor.GRAY.toString() + "Level: " + PlayerProfileManager.profiles.get(player).getLevel(),
-				ChatColor.RED.toString() + "Health: " + PlayerProfileManager.profiles.get(player).getVitalityNative(),
-				ChatColor.BLUE.toString() + "Defence: " + PlayerProfileManager.profiles.get(player).getDefenceNative(),
-				ChatColor.RED.toString() + "Strength: " + PlayerProfileManager.profiles.get(player).getStrengthNative(),
-				ChatColor.GOLD.toString() + "Endurance: "
-						+ PlayerProfileManager.profiles.get(player).getEnduranceNative(),
-				ChatColor.DARK_AQUA.toString() + "Intelligence: "
-						+ PlayerProfileManager.profiles.get(player).getIntelligenceNative(),
-				ChatColor.AQUA.toString() + "Mana: "
-						+ PlayerProfileManager.profiles.get(player).getManaCapacityNative(),
-				ChatColor.GREEN.toString() + "Luck WIP: ",
-				ChatColor.LIGHT_PURPLE.toString() + "Karma: " + PlayerProfileManager.profiles.get(player).getKarma(),
-				ChatColor.GOLD.toString() + "Gold: " + PlayerProfileManager.profiles.get(player).getGold()));
+				ChatColor.GRAY.toString() + "Rank " + PlayerProfileManager.profiles.get(player).getRank(),
+				ChatColor.GRAY.toString() + "Niveau " + PlayerProfile.getStat(player, Stat.LEVEL),
+				ChatColor.RED.toString() + "\u2764 Vitalité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.VITALITYNATIVE),
+				ChatColor.BLUE.toString() + "\u2748 Defence " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEFENCENATIVE),
+				ChatColor.GREEN.toString() + "\u03A8 Force " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.STRENGTHNATIVE),
+				ChatColor.YELLOW.toString() + "\u27B6 Dexterité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEXTIRITYNATIVE),
+				ChatColor.GOLD.toString() + "\u26A1 Endurance " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.ENDURENCENATIVE),
+				ChatColor.BLUE.toString() + "\u2745 Intelligence " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.INTELLIGENCENATIVE),
+				ChatColor.DARK_PURPLE.toString() + "\u29FE Foi " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.FAITHNATIVE),
+				ChatColor.AQUA.toString() + "\u224B Mana " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.MANACAPACITYNATIVE),
+				ChatColor.WHITE.toString() + "\u2727 Agilité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.AGILITYNATIVE),
+				ChatColor.GREEN.toString() + "\u2618 Luck WIP ",
+				ChatColor.LIGHT_PURPLE.toString() + "\u2756 Karma " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.KARMA)));
 
 		inventory.setItem(10, GuiItem.createGuiItem(new ItemStack(Material.EXP_BOTTLE), ChatColor.BLUE + "Statistiques", ""));
 
@@ -337,18 +513,53 @@ public class MenuManager implements Listener {
 
 	public static void initializeStatsMenuItems(Player player, Inventory inventory) {
 
+		
 		//STATS ITEMS
-		inventory.setItem(10, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "\u2756 Vitalité : " + PlayerProfile.getStat(player, Stat.VITALITYNATIVE), ChatColor.GRAY + "La vitalité vous permet d'augmenter votre vie maximale et votre défense"));
+		inventory.setItem(19, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "\u2764 Vitalité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.VITALITYNATIVE),
+				ChatColor.GRAY + "La vitalité vous permet d'augmenter votre vie maximale et votre défense.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));
 		
-		inventory.setItem(12, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 5), ChatColor.GREEN + "\u03A8 Force : " + PlayerProfile.getStat(player, Stat.STRENGTHNATIVE), ""));
+		inventory.setItem(21, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 5), ChatColor.GREEN + "\u03A8 Force " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.STRENGTHNATIVE),
+				ChatColor.GRAY + "La force vous permet d'augmenter vos dégats physiques et vos dégats physiques critiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));	
 		
-		inventory.setItem(14, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 4), ChatColor.YELLOW + "\u2727 Dexterité : " + PlayerProfile.getStat(player, Stat.DEXTIRITYNATIVE), ""));
+		inventory.setItem(23, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 4), ChatColor.YELLOW + "\u27B6 Dexterité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEXTIRITYNATIVE),
+				ChatColor.GRAY + "La dexterité vous permet d'augmenter vos chances de coup critique physique.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));
 		
-		inventory.setItem(16, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 0), ChatColor.WHITE + "Agilité : " + PlayerProfile.getStat(player, Stat.AGILITYNATIVE), ""));
+		inventory.setItem(25, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 0), ChatColor.WHITE + "\u2727 Agilité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.AGILITYNATIVE),
+				ChatColor.GRAY + "L'agilité vous permet d'augmenter vos chances d'esquives et votre vitesse de déplacement.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));
 		
-		inventory.setItem(21, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 3), ChatColor.BLUE + "Intelligence : " + PlayerProfile.getStat(player, Stat.INTELLIGENCENATIVE), ""));
+		inventory.setItem(30, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 3), ChatColor.BLUE + "\u2745 Intelligence " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.INTELLIGENCENATIVE),
+				ChatColor.GRAY + "L'intelligence vous permet d'augmenter vos dégats magiques et vos dégats magiques critiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));
 		
-		inventory.setItem(23, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 2), ChatColor.DARK_PURPLE + "\u29FE Foi : " + PlayerProfile.getStat(player, Stat.FAITHNATIVE), ""));
+		inventory.setItem(32, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 2), ChatColor.DARK_PURPLE + "\u29FE Foi " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.FAITHNATIVE),
+				ChatColor.GRAY + "La foi vous permet d'augmenter vos chances de coup critique magiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points"));
+		
+		
+		//OTHERS ITEMS
+		if (PlayerProfileManager.profiles.get(player).getPointsAvailables() == 0) {			
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.BOOK), ChatColor.GOLD + "Point disponible " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));
+		} else if (PlayerProfileManager.profiles.get(player).getPointsAvailables() == 1) {
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.ENCHANTED_BOOK), ChatColor.GOLD + "Point disponible " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));
+		} else {
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.ENCHANTED_BOOK), ChatColor.GOLD + "Points disponibles " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));	
+		}
 		
 		//MENU ITEMS
 		inventory.setItem(45, GuiItem.createGuiItem(new ItemStack(Material.ARROW), ChatColor.YELLOW + "Retour", ""));
@@ -384,20 +595,20 @@ public class MenuManager implements Listener {
 		inventory.setItem(4, GuiItem.createHeadItem(Material.SKULL_ITEM, player, ChatColor.GREEN + "Profile",
 				ChatColor.BLUE.toString() + "note: mettre les dégats (et ce pour tout)",
 				ChatColor.BLUE.toString() + "et non les stats pure, degats sur un monstre de meme niv que le joueur ",
-				ChatColor.GRAY.toString() + "Rank: " + PlayerProfileManager.profiles.get(player).getRank(),
-				ChatColor.GRAY.toString() + "Level: " + PlayerProfileManager.profiles.get(player).getLevel(),
-				ChatColor.RED.toString() + "Health: " + PlayerProfileManager.profiles.get(player).getVitalityNative(),
-				ChatColor.BLUE.toString() + "Defence: " + PlayerProfileManager.profiles.get(player).getDefenceNative(),
-				ChatColor.RED.toString() + "Strength: " + PlayerProfileManager.profiles.get(player).getStrengthNative(),
-				ChatColor.GOLD.toString() + "Endurance: "
-						+ PlayerProfileManager.profiles.get(player).getEnduranceNative(),
-				ChatColor.DARK_AQUA.toString() + "Intelligence: "
-						+ PlayerProfileManager.profiles.get(player).getIntelligenceNative(),
-				ChatColor.AQUA.toString() + "Mana: "
-						+ PlayerProfileManager.profiles.get(player).getManaCapacityNative(),
+				ChatColor.GRAY.toString() + "Rank : " + PlayerProfileManager.profiles.get(player).getRank(),
+				ChatColor.GRAY.toString() + "Niveau : " + PlayerProfile.getStat(player, Stat.LEVEL),
+				ChatColor.RED.toString() + "\u2756 Vitalité : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.VITALITYNATIVE),
+				ChatColor.BLUE.toString() + "Defence : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEFENCENATIVE),
+				ChatColor.GREEN.toString() + " \u03A8 Force : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.STRENGTHNATIVE),
+				ChatColor.YELLOW.toString() + "\u2727 Dexterité : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEXTIRITYNATIVE),
+				ChatColor.GOLD.toString() + "Endurance : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.ENDURENCENATIVE),
+				ChatColor.BLUE.toString() + "Intelligence : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.INTELLIGENCENATIVE),
+				ChatColor.DARK_PURPLE.toString() + "\u29FE Foi : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.FAITHNATIVE),
+				ChatColor.AQUA.toString() + "Mana : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.MANACAPACITYNATIVE),
+				ChatColor.WHITE.toString() + "Agilité : " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.AGILITYNATIVE),
 				ChatColor.GREEN.toString() + "Luck WIP: ",
-				ChatColor.LIGHT_PURPLE.toString() + "Karma: " + PlayerProfileManager.profiles.get(player).getKarma(),
-				ChatColor.GOLD.toString() + "Gold: " + PlayerProfileManager.profiles.get(player).getGold()));
+				ChatColor.LIGHT_PURPLE.toString() + "Karma: " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.KARMA),
+				ChatColor.GOLD.toString() + "Gold: " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.GOLD)));
 
 		inventory.setItem(10, GuiItem.createGuiItem(new ItemStack(Material.EXP_BOTTLE), ChatColor.BLUE + "Statistiques", ""));
 
@@ -426,17 +637,69 @@ public class MenuManager implements Listener {
 	public static void initializeStatsMenuDevItems(Player player, Inventory inventory) {
 		
 		//STATS ITEMS
-		inventory.setItem(10, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "Vitalité", ""));
+		inventory.setItem(19, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 14), ChatColor.RED + "\u2764 Vitalité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.VITALITYNATIVE),
+				ChatColor.GRAY + "La vitalité vous permet d'augmenter votre vie maximale et votre défense.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
 		
-		inventory.setItem(12, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 5), ChatColor.GREEN + "Force", ""));
+		inventory.setItem(21, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 5), ChatColor.GREEN + "\u03A8 Force " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.STRENGTHNATIVE),
+				ChatColor.GRAY + "La force vous permet d'augmenter vos dégats physiques et vos dégats physiques critiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
 		
-		inventory.setItem(14, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 4), ChatColor.YELLOW + "Dexterité", ""));
+		inventory.setItem(23, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 4), ChatColor.YELLOW + "\u27B6 Dexterité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.DEXTIRITYNATIVE),
+				ChatColor.GRAY + "La dexterité vous permet d'augmenter vos chances de coup critique physique.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
 		
-		inventory.setItem(16, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 0), ChatColor.WHITE + "Agilité", ""));
+		inventory.setItem(25, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 0), ChatColor.WHITE + "\u2727 Agilité " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.AGILITYNATIVE),
+				ChatColor.GRAY + "L'agilité vous permet d'augmenter vos chances d'esquives et votre vitesse de déplacement.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
+
+		inventory.setItem(30, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 3), ChatColor.BLUE + "\u2745 Intelligence " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.INTELLIGENCENATIVE),
+				ChatColor.GRAY + "L'intelligence vous permet d'augmenter vos dégats magiques et vos dégats magiques critiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
+
+		inventory.setItem(32, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 2), ChatColor.DARK_PURPLE + "\u29FE Foi " + ChatColor.GRAY + PlayerProfile.getStat(player, Stat.FAITHNATIVE),
+				ChatColor.GRAY + "La foi vous permet d'augmenter vos chances de coup critique magiques.",
+				"",
+				ChatColor.GREEN + "Clic gauche + Ajouter 1 point",
+				ChatColor.GREEN + "Clic droit + Ajouter 5 points",
+				"",
+				ChatColor.RED + "Jeter - Retirer 1 point",
+				ChatColor.RED + "Ctrl + Jeter - Retirer 5 points"));
 		
-		inventory.setItem(21, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 3), ChatColor.BLUE + "Intelligence", ""));
-		
-		inventory.setItem(23, GuiItem.createGuiItem(new ItemStack(Material.STAINED_CLAY, 1, (short) 2), ChatColor.DARK_PURPLE + "Foi", ""));
+				
+		//OTHERS ITEMS
+		if (PlayerProfileManager.profiles.get(player).getPointsAvailables() == 0) {			
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.BOOK), ChatColor.GOLD + "Point disponible " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));
+		} else if (PlayerProfileManager.profiles.get(player).getPointsAvailables() == 1) {
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.ENCHANTED_BOOK), ChatColor.GOLD + "Point disponible " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));
+		} else {
+		inventory.setItem(4, GuiItem.createGuiItem(new ItemStack(Material.ENCHANTED_BOOK), ChatColor.GOLD + "Points disponibles " + ChatColor.GRAY + PlayerProfileManager.profiles.get(player).getPointsAvailables(), ""));	
+		}
 		
 		//MENU ITEMS
 		inventory.setItem(45, GuiItem.createGuiItem(new ItemStack(Material.ARROW), ChatColor.YELLOW + "Retour", ""));

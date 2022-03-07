@@ -55,8 +55,7 @@ public class OlympCommands implements CommandExecutor, TabCompleter {
 							targetPlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 							break;
 						case "UNICODE":
-							UnicodeBlock a = UnicodeBlock.forName(args[1]);
-							System.out.println(a);
+							player.sendMessage(ChatColor.RED + "\u2665");
 							break;
 
 						case "SETSTAT":
